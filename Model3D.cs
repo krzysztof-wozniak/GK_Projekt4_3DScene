@@ -9,7 +9,15 @@ namespace GK_Projekt4_3DScene
 {
     public class Model3D
     {
+        public bool Visible { get; set; } = true;
+
         public List<Triangle3D> Triangles { get; set; }
+
+        public Matrix<float> ModelMatrix = Matrix<float>.Build.DenseOfArray(new float[,] {
+                                                                                     { 1, 0, 0, 0 },
+                                                                                     { 0, 1, 0, 0 },
+                                                                                     { 0, 0, 1, 0 },
+                                                                                     { 0, 0, 0, 1 } }); //default model matrix
 
         public static Model3D CreateCone(int n, float height, float radius)
         {

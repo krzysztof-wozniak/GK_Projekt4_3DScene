@@ -27,7 +27,7 @@ namespace GK_Projekt4_3DScene
         /// 
         /// </summary>
         /// <returns>Return ViewMatrix</returns>
-        public Matrix<float> CreteLookAt()
+        public Matrix<float> CreateLookAt()
         {
             //TODO: zwraca ViewMatrix
             return Matrix<float>.Build.DenseOfArray(new float[,] { { (float)-0.164398987, (float)0.986393924, (float)-3.5173E-18, (float)1.12554E-16 },
