@@ -19,7 +19,7 @@ namespace GK_Projekt4_3DScene
                                                                                      { 0, 0, 1, 0 },
                                                                                      { 0, 0, 0, 1 } }); //default model matrix
 
-        public static Model3D CreateCone(int n, float height, float radius)
+        public static Model3D CreatePyramid(int n, float height, float radius)
         {
             Model3D cone = new Model3D() { Triangles = new List<Triangle3D>() };
             var builder = Vector<float>.Build;

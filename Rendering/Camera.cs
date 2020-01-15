@@ -9,10 +9,19 @@ namespace GK_Projekt4_3DScene
 {
     public class Camera
     {
+        /// <summary>
+        /// Position of the camera in the world coordinates
+        /// </summary>
         public Vector<float> CameraPosition { get; set; }
         
+        /// <summary>
+        /// Camera's target's world coordinates
+        /// </summary>
         public Vector<float> CameraTarget { get; set; }
 
+        /// <summary>
+        /// Normal vector to the camera
+        /// </summary>
         public Vector<float> CameraUpVector { get; set; }
 
         public float FieldOfView { get; set; }

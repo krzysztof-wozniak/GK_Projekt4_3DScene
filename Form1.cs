@@ -20,6 +20,8 @@ namespace GK_Projekt4_3DScene
         private Engine Engine { get; set; }
 
         private List<Model3D> Models { get; set; }
+
+        private float time = 0;
         
 
         
@@ -29,12 +31,15 @@ namespace GK_Projekt4_3DScene
             InitializeComponent();
             Engine = new Engine() { Camera = new Camera() };
             Models = new List<Model3D>();
-            Models.Add(Model3D.CreateCone(10, -0.5f, 1f));
+            for(int i = 0; i < 1; i++)
+                Models.Add(Model3D.CreatePyramid(50, -1f, 1f));
+            //Models.Add(Model3D.CreatePyramid(20, -0.5f, 0.5f));
         }
 
         private void pictureBox_Click(object sender, EventArgs e)
         {
             UpdatePicture();
+            timer.Start();
         }
 
         private void UpdatePicture()
@@ -45,6 +50,17 @@ namespace GK_Projekt4_3DScene
             pictureBox.Image = image.Bitmap;
             if (oldImage != null)
                 oldImage.Dispose();
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+
+            Models[0].ModelMatrix[0, 0] = (float)Math.Cos(time * Math.PI / 180);
+            Models[0].ModelMatrix[0, 1] = -(float)Math.Sin(time * Math.PI / 180);
+            Models[0].ModelMatrix[1, 0] = (float)Math.Sin(2 * time * Math.PI / 180);
+            Models[0].ModelMatrix[1, 1] = (float)Math.Cos(time * Math.PI / 180);
+            UpdatePicture();
+            time += 1;
         }
     }
 }
