@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extentions\Extentions.cs" />
     <Compile Include="Rendering\ActiveEdge.cs" />
     <Compile Include="Rendering\Camera.cs" />
     <Compile Include="Rendering\DirectBitmap.cs" />

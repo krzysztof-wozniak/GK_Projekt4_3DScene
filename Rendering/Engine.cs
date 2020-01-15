@@ -10,14 +10,12 @@ namespace GK_Projekt4_3DScene
 {
     public class Engine
     {
-        public Camera Camera { get; set; }
-
-        //public Matrix<float> 
-        public void DrawModel(Model3D model3d, DirectBitmap image)
+        
+        public void DrawModel(Model3D model3d, DirectBitmap image, Camera camera)
         {
             if (!model3d.Visible)
                 return;
-            Matrix<float> transformationMatrix = Camera.CreatePerspectiveFieldOfView().Multiply(Camera.CreateLookAt()).Multiply(model3d.ModelMatrix);
+            Matrix<float> transformationMatrix = camera.CreatePerspectiveFieldOfView().Multiply(camera.CreateLookAt()).Multiply(model3d.ModelMatrix);
             Model2D model2d = VertexShader.TransformModel(model3d, transformationMatrix);
             MapModel(model2d, image.Width, image.Height);
             foreach(var t in model2d.Triangles)
@@ -39,7 +37,7 @@ namespace GK_Projekt4_3DScene
             };
         }
 
-        public void DrawModels(List<Model3D> models, DirectBitmap image)
+        public void DrawModels(List<Model3D> models, DirectBitmap image, Camera camera)
         {
             List<Model2D> models2d = new List<Model2D>();
             //for some reason sometimes a random model in the next foreach is null
@@ -55,7 +53,7 @@ namespace GK_Projekt4_3DScene
 
             foreach (var model in models.Where(m => m.Visible))
             {
-                Matrix<float> transformationMatrix = Camera.CreatePerspectiveFieldOfView().Multiply(Camera.CreateLookAt()).Multiply(model.ModelMatrix);
+                Matrix<float> transformationMatrix = camera.CreatePerspectiveFieldOfView().Multiply(camera.CreateLookAt()).Multiply(model.ModelMatrix);
                 Model2D model2d = VertexShader.TransformModel(model, transformationMatrix);
                 MapModel(model2d, image.Width, image.Height);
                 if (model2d != null)

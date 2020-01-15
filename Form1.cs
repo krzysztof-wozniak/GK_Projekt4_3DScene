@@ -22,17 +22,22 @@ namespace GK_Projekt4_3DScene
         private List<Model3D> Models { get; set; }
 
         private float time = 0;
+
+        private List<Camera> Cameras = new List<Camera>();
+
+        private int chosenCameraIndex = 0;
         
 
-        
 
         public Form1()
         {
             InitializeComponent();
-            Engine = new Engine() { Camera = new Camera() };
+            Engine = new Engine() { };
             Models = new List<Model3D>();
+            Camera cam = new Camera(null, null, null);
+            Cameras.Add(cam);
             for(int i = 0; i < 1; i++)
-                Models.Add(Model3D.CreatePyramid(50, -1f, 1f));
+                Models.Add(Model3D.CreatePyramid(10, -0.5f, 0.5f));
             //Models.Add(Model3D.CreatePyramid(20, -0.5f, 0.5f));
         }
 
@@ -46,7 +51,7 @@ namespace GK_Projekt4_3DScene
         {
             this.oldImage = this.image;
             this.image = new DirectBitmap(pictureBox.Width, pictureBox.Height);
-            Engine.DrawModels(Models, image);
+            Engine.DrawModels(Models, image, Cameras[chosenCameraIndex]);
             pictureBox.Image = image.Bitmap;
             if (oldImage != null)
                 oldImage.Dispose();
@@ -57,7 +62,7 @@ namespace GK_Projekt4_3DScene
 
             Models[0].ModelMatrix[0, 0] = (float)Math.Cos(time * Math.PI / 180);
             Models[0].ModelMatrix[0, 1] = -(float)Math.Sin(time * Math.PI / 180);
-            Models[0].ModelMatrix[1, 0] = (float)Math.Sin(2 * time * Math.PI / 180);
+            Models[0].ModelMatrix[1, 0] = (float)Math.Sin(time * Math.PI / 180);
             Models[0].ModelMatrix[1, 1] = (float)Math.Cos(time * Math.PI / 180);
             UpdatePicture();
             time += 1;

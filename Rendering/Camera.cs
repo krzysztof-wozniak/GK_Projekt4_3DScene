@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MathNet.Numerics.LinearAlgebra;
+using GK_Projekt4_3DScene.Extentions;
 
 namespace GK_Projekt4_3DScene
 {
@@ -32,6 +33,18 @@ namespace GK_Projekt4_3DScene
 
         public float FarPlaneDistance { get; set; }
 
+        public Camera(Vector<float> cameraPosition, Vector<float> cameraTarget, Vector<float> cameraUpVector, float fieldOfView = 45f, float nearPlaneDistance = 1f,
+                      float farPlaneDistance = 100f, float aspectRatio = 1f)
+        {
+            CameraPosition = cameraPosition;
+            CameraTarget = cameraTarget;
+            CameraUpVector = cameraUpVector;
+            FieldOfView = fieldOfView;
+            AspectRatio = aspectRatio;
+            NearPlaneDistance = nearPlaneDistance;
+            FarPlaneDistance = farPlaneDistance;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -51,11 +64,19 @@ namespace GK_Projekt4_3DScene
         /// <returns>Returns ProjectionMatrix</returns>
         public Matrix<float> CreatePerspectiveFieldOfView()
         {
+
+            float e = 1f / (float)Math.Tan(MathExtentions.DegreeToRadian((double)FieldOfView / 2.0));
             //TODO: zwraca ProjectionMatrix
-            return Matrix<float>.Build.DenseOfArray(new float[,] { {(float)2.414213562, 0, 0, 0 },
-                                                                    { 0, (float)2.414213562, 0, 0 },
-                                                                    { 0, 0, (float)-1.02020202, (float)-2.02020202 },
-                                                                    { 0, 0, (float)-1, 0 } });
+            //return Matrix<float>.Build.DenseOfArray(new float[,] { {(float)2.414213562, 0, 0, 0 },
+            //                                                        { 0, (float)2.414213562, 0, 0 },
+            //                                                        { 0, 0, (float)-1.02020202, (float)-2.02020202 },
+            //                                                        { 0, 0, (float)-1, 0 } });
+            float m22 = -(FarPlaneDistance + NearPlaneDistance) / (FarPlaneDistance - NearPlaneDistance);
+            float m23 = -(2f * FarPlaneDistance * NearPlaneDistance) / (FarPlaneDistance - NearPlaneDistance);
+            return Matrix<float>.Build.DenseOfArray(new float[,] {  { e, 0, 0, 0 },
+                                                                    { 0, e / AspectRatio, 0, 0 },
+                                                                    { 0, 0, m22, m23 },
+                                                                    { 0, 0, -1f, 0 } });
 
         }
     }
