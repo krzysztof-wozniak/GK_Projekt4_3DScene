@@ -34,7 +34,11 @@ namespace GK_Projekt4_3DScene
             InitializeComponent();
             Engine = new Engine() { };
             Models = new List<Model3D>();
-            Camera cam = new Camera(null, null, null);
+            var builder = Vector<float>.Build;
+            Vector<float> cameraPosition = builder.DenseOfArray(new float[] { 3f, 0.5f, 0.5f });
+            Vector<float> cameraTarget = builder.DenseOfArray(new float[] { 0f, 0f, 0f });
+            Vector<float> cameraUpVector = builder.DenseOfArray(new float[] { 0f, 0f, 1f });
+            Camera cam = new Camera(cameraPosition, cameraTarget, cameraUpVector);
             Cameras.Add(cam);
             for(int i = 0; i < 1; i++)
                 Models.Add(Model3D.CreatePyramid(10, -0.5f, 0.5f));
