@@ -35,20 +35,23 @@ namespace GK_Projekt4_3DScene
             Engine = new Engine() { };
             Models = new List<Model3D>();
             var builder = Vector<float>.Build;
-            Vector<float> cameraPosition = builder.DenseOfArray(new float[] { 3f, 0.5f, 0.5f });
+            Vector<float> cameraPosition = builder.DenseOfArray(new float[] { 3f, 0.5f, 2f });
             Vector<float> cameraTarget = builder.DenseOfArray(new float[] { 0f, 0f, 0f });
-            Vector<float> cameraUpVector = builder.DenseOfArray(new float[] { 0f, 0f, 1f });
+            Vector<float> cameraUpVector = builder.DenseOfArray(new float[] { 0f, 0f, -1f });
             Camera cam = new Camera(cameraPosition, cameraTarget, cameraUpVector);
             Cameras.Add(cam);
             for(int i = 0; i < 1; i++)
-                Models.Add(Model3D.CreatePyramid(10, -0.5f, 0.5f));
+                Models.Add(Model3D.CreatePyramid(4, 0.7f, 0.2f));
             //Models.Add(Model3D.CreatePyramid(20, -0.5f, 0.5f));
         }
 
         private void pictureBox_Click(object sender, EventArgs e)
         {
             UpdatePicture();
-            timer.Start();
+            if (!timer.Enabled)
+                timer.Start();
+            else
+                timer.Stop();
         }
 
         private void UpdatePicture()
@@ -64,10 +67,37 @@ namespace GK_Projekt4_3DScene
         private void timer_Tick(object sender, EventArgs e)
         {
 
-            Models[0].ModelMatrix[0, 0] = (float)Math.Cos(time * Math.PI / 180);
-            Models[0].ModelMatrix[0, 1] = -(float)Math.Sin(time * Math.PI / 180);
-            Models[0].ModelMatrix[1, 0] = (float)Math.Sin(time * Math.PI / 180);
-            Models[0].ModelMatrix[1, 1] = (float)Math.Cos(time * Math.PI / 180);
+            //Models[0].ModelMatrix[0, 0] = (float)Math.Cos(time * Math.PI / 180);
+            //Models[0].ModelMatrix[0, 1] = -(float)Math.Sin(time * Math.PI / 180);
+            //Models[0].ModelMatrix[1, 0] = (float)Math.Sin(time * Math.PI / 180);
+            //Models[0].ModelMatrix[1, 1] = (float)Math.Cos(time * Math.PI / 180);
+            //Models[0].Rotation[2] = time;
+
+            //Models[0].Rotation[1] = 0;
+
+
+            Cameras[0].CameraPosition[0] -= 2f;
+            //Cameras[0].NearPlaneDistance += 1f;
+
+            //Cameras[0].FarPlaneDistance -= 5;
+            //Cameras[0].CameraTarget[0] = 0f;
+            //Cameras[0].CameraTarget[1] = 0f;
+            //Cameras[0].CameraTarget[2] = 0f;
+
+            //Models[1].Position[0] += 0.001f;
+            //Models[2].Position[0] -= 0.001f;
+            //Models[3].Position[1] += 0.001f;
+            //Models[4].Position[1] -= 0.001f;
+            //Models[0].Position[0] += 0.001f;
+            //Models[0].Position[0] += 0.001f;
+            //Models[0].Position[1] = 0;
+            //Models[0].Position[2] = 0;
+            label1.Text = "Camera position: " + Cameras[0].CameraPosition.ToString() + 
+                "\n f: " + Cameras[0].FarPlaneDistance + "\n n: " + Cameras[0].NearPlaneDistance;
+
+            //Cameras[0].CameraTarget[0] = (float)Math.Cos(time * Math.PI / 180);
+            //Cameras[0].CameraTarget[1] = (float)Math.Sin(time * Math.PI / 180);
+            //Cameras[0].CameraTarget[2] = (float)Math.Sin(time * Math.PI / 180)/2f;
             UpdatePicture();
             time += 1;
         }

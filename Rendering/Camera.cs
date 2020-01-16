@@ -16,7 +16,7 @@ namespace GK_Projekt4_3DScene
         public Vector<float> CameraPosition { get; set; }
         
         /// <summary>
-        /// Camera's target's world coordinates
+        /// Camera target's world coordinates
         /// </summary>
         public Vector<float> CameraTarget { get; set; }
 

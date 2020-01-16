@@ -60,14 +60,29 @@ namespace GK_Projekt4_3DScene
 
         }
 
-
+        private static Random r = new Random();
         public static void DrawPolygon(Triangle2D t, DirectBitmap image)
         {
             using (Graphics g = Graphics.FromImage(image.Bitmap))
             {
-                g.DrawLine(Pens.Black, t.A, t.B);
-                g.DrawLine(Pens.Black, t.B, t.C);
-                g.DrawLine(Pens.Black, t.C, t.A);
+                //Random r = new Random();
+                int a = 0;
+                if (a == 1)
+                {
+
+
+                    Color c = Color.FromArgb(r.Next(0, 255), r.Next(0, 255), r.Next(0, 255));
+                    Pen p = new Pen(c);
+                    g.DrawLine(p, t.A, t.B);
+                    g.DrawLine(p, t.B, t.C);
+                    g.DrawLine(p, t.C, t.A);
+                }
+                else
+                {
+                    g.DrawLine(Pens.Black, t.A, t.B);
+                    g.DrawLine(Pens.Black, t.B, t.C);
+                    g.DrawLine(Pens.Black, t.C, t.A);
+                }
             }
         }
 

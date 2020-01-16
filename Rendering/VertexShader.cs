@@ -41,6 +41,7 @@ namespace GK_Projekt4_3DScene
                 if (!isInRange(a) || !isInRange(b) || !isInRange(c))
                     continue;
                 Triangle2D t = new Triangle2D(a, b, c);
+                t.Color = triangle3D.Color;
                 model2D.Triangles.Add(t);
             }
             return model2D;
@@ -64,7 +65,7 @@ namespace GK_Projekt4_3DScene
 
         private static bool isInRange(Vector<float> v)
         {
-            if (v[0] < -1 || v[0] > 1 || v[1] < -1 || v[1] > 1)
+            if (v[0] <= -1 || v[0] >= 1 || v[1] <= -1 || v[1] >= 1)
                 return false;
             return true;
         }
