@@ -16,6 +16,12 @@ namespace GK_Projekt4_3DScene
 
         public Vector<float> C { get; set; }
 
+        public Vector<float> NormalVectorA { get; set; }
+
+        public Vector<float> NormalVectorB { get; set; }
+
+        public Vector<float> NormalVectorC { get; set; }
+
         public Color Color { get; set; }
 
         public Triangle3D(Vector<float> a, Vector<float> b, Vector<float> c)

@@ -92,6 +92,8 @@ namespace GK_Projekt4_3DScene
                 double deg = Math.PI * (double)i * 2.0 / (double)n;
                 basePoints[i] = builder.DenseOfArray(new float[] { radius * (float)Math.Cos(deg), radius * (float)Math.Sin(deg), 0, 1 });
             }
+            //triangles:
+            //parzyste - trojkaty podstawy, nieparzyste sciany boczne
             for(int i = 0; i < n - 1; i++)
             {
                 var t1 = new Triangle3D(basePoints[i], basePoints[i + 1], p0);
@@ -101,10 +103,33 @@ namespace GK_Projekt4_3DScene
             }
             cone.Triangles.Add(new Triangle3D(basePoints[n - 1], basePoints[0], p0));
             cone.Triangles.Add(new Triangle3D(basePoints[n - 1], basePoints[0], p1));
+
+            //Color:
             for(int i = 0; i < cone.Triangles.Count; i++)
             {
                 cone.Triangles[i].Color = Color.FromArgb(random.Next(50, 200), random.Next(50, 200), random.Next(50, 200));
+                //cone.Triangles[i].Color = Color.DarkGreen;
             }
+
+            //normal vectors:
+            //parzyste - podstawa
+            for(int i = 0; i + 1 < cone.Triangles.Count; i += 2)
+            {
+                cone.Triangles[i].NormalVectorA = builder.DenseOfArray(new float[] { 0, 0, -1 }); //wektor w dol
+                cone.Triangles[i].NormalVectorB = builder.DenseOfArray(new float[] { 0, 0, -1 });
+                cone.Triangles[i].NormalVectorC = builder.DenseOfArray(new float[] { 0, 0, -1 });
+
+                Vector<float> BAVector = cone.Triangles[i].B.Subtract(cone.Triangles[i].A).SubVector(0, 3);
+                Vector<float> CAVector = cone.Triangles[i].C.Subtract(cone.Triangles[i].A).SubVector(0, 3);
+                Vector<float> normalVectorSide = BAVector.CrossProduct(CAVector).Normalize(2);
+
+                cone.Triangles[i + 1].NormalVectorA = normalVectorSide;
+                cone.Triangles[i + 1].NormalVectorB = normalVectorSide.Clone();
+                cone.Triangles[i + 1].NormalVectorC = normalVectorSide.Clone();
+
+                //cone.Triangles[i + 1].NormalVector = builder.DenseOfArray(new float[] { -height, radius, })
+            }
+
             return cone;
         }
     }

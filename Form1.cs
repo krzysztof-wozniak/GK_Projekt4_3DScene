@@ -40,12 +40,12 @@ namespace GK_Projekt4_3DScene
             Vector<float> cameraUpVector = builder.DenseOfArray(new float[] { 0f, 0f, -1f });
             Camera cam = new Camera(cameraPosition, cameraTarget, cameraUpVector);
             Cameras.Add(cam);
-            for(int i = 0; i < 2; i++)
+            for(int i = 0; i < 1; i++)
                 Models.Add(Model3D.CreatePyramid(30, 0.7f, 0.2f));
-            Models[1].Rotation[1] = 90f;
-            Models[1].Scale[0] = 1.1f;
-            Models[1].Scale[1] = 1.1f;
-            Models[1].Scale[2] = 1.1f;
+            //Models[1].Rotation[1] = 90f;
+            //Models[1].Scale[0] = 1.1f;
+            //Models[1].Scale[1] = 1.1f;
+            //Models[1].Scale[2] = 1.1f;
             //Models.Add(Model3D.CreatePyramid(20, -0.5f, 0.5f));
         }
 
@@ -68,14 +68,19 @@ namespace GK_Projekt4_3DScene
                 oldImage.Dispose();
         }
 
+        private Random r = new Random();
         private void timer_Tick(object sender, EventArgs e)
         {
             //Cameras[0].CameraPosition[0] -= 0.02f;
             //Cameras[0].CameraPosition[1] += 0.004f;
             //Cameras[0].CameraPosition[2] -= 0.015f;
-            Models[0].Rotation[2] += 1f;
-            Models[1].Rotation[0] += 1f;
-            Models[1].Rotation[1] += 0.2f;
+            //Models[0].Rotation[2] += 1f;
+            Models[0].Rotation[0] += -0.1f;
+            Models[0].Rotation[1] += 0.3f;
+            //Models[0].Position[0] += ((float)r.NextDouble() - 0.5f) / 50f;
+            //Models[0].Position[1] += ((float)r.NextDouble() - 0.5f) / 50f;
+            //Models[1].Rotation[0] += 1f;
+            //Models[1].Rotation[1] += 0.2f;
 
             label1.Text = "Camera position: " + Cameras[0].CameraPosition.ToString() + 
                 "\n f: " + Cameras[0].FarPlaneDistance + "\n n: " + Cameras[0].NearPlaneDistance;
