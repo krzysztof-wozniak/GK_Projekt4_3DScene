@@ -66,32 +66,8 @@ namespace GK_Projekt4_3DScene
 
         private void timer_Tick(object sender, EventArgs e)
         {
+            Cameras[0].CameraPosition[0] -= 0.02f;
 
-            //Models[0].ModelMatrix[0, 0] = (float)Math.Cos(time * Math.PI / 180);
-            //Models[0].ModelMatrix[0, 1] = -(float)Math.Sin(time * Math.PI / 180);
-            //Models[0].ModelMatrix[1, 0] = (float)Math.Sin(time * Math.PI / 180);
-            //Models[0].ModelMatrix[1, 1] = (float)Math.Cos(time * Math.PI / 180);
-            //Models[0].Rotation[2] = time;
-
-            //Models[0].Rotation[1] = 0;
-
-
-            Cameras[0].CameraPosition[0] -= 2f;
-            //Cameras[0].NearPlaneDistance += 1f;
-
-            //Cameras[0].FarPlaneDistance -= 5;
-            //Cameras[0].CameraTarget[0] = 0f;
-            //Cameras[0].CameraTarget[1] = 0f;
-            //Cameras[0].CameraTarget[2] = 0f;
-
-            //Models[1].Position[0] += 0.001f;
-            //Models[2].Position[0] -= 0.001f;
-            //Models[3].Position[1] += 0.001f;
-            //Models[4].Position[1] -= 0.001f;
-            //Models[0].Position[0] += 0.001f;
-            //Models[0].Position[0] += 0.001f;
-            //Models[0].Position[1] = 0;
-            //Models[0].Position[2] = 0;
             label1.Text = "Camera position: " + Cameras[0].CameraPosition.ToString() + 
                 "\n f: " + Cameras[0].FarPlaneDistance + "\n n: " + Cameras[0].NearPlaneDistance;
 

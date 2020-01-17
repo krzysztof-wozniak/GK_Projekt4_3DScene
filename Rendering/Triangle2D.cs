@@ -16,6 +16,8 @@ namespace GK_Projekt4_3DScene
 
         public Point C { get; private set; }
 
+        
+
         public Vector<float> VectorA { get; set; } //in range <-1, 1>, before mapping
 
         public Vector<float> VectorB { get; set; } //as above
@@ -58,6 +60,12 @@ namespace GK_Projekt4_3DScene
 
         public List<ActiveEdge> GetActiveEdges()
         {
+            List<Point> points = new List<Point>() { a, b, c };
+            points.Sort((x, y) => x.Y.CompareTo(y.Y));//rosnaca
+            A = points[0];
+            B = points[1];
+            C = points[2];
+
             List<ActiveEdge> edges = new List<ActiveEdge>();
             double dx, dy, m;
             dx = C.X - B.X;

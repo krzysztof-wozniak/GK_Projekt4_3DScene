@@ -10,6 +10,8 @@ namespace GK_Projekt4_3DScene
 {
     public class Engine
     {
+         
+
         
         public void DrawModel(Model3D model3d, DirectBitmap image, Camera camera)
         {
