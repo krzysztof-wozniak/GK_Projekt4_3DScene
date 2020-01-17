@@ -10,13 +10,17 @@ namespace GK_Projekt4_3DScene
 {
     public class Triangle2D
     {
-        public Point A { get; private set; }
+        public Point A { get; set; }
 
-        public Point B { get; private set; }
+        public Point B { get; set; }
 
-        public Point C { get; private set; }
+        public Point C { get; set; }
 
-        
+        public float ZBufferA { get; set; }
+
+        public float ZBufferB { get; set; }
+
+        public float ZBufferC { get; set; }
 
         public Vector<float> VectorA { get; set; } //in range <-1, 1>, before mapping
 
@@ -28,29 +32,16 @@ namespace GK_Projekt4_3DScene
 
         public Triangle2D(Point a, Point b, Point c)
         {
-            List<Point> points = new List<Point>() { a, b, c };
-            points.Sort((x, y) => x.Y.CompareTo(y.Y));//rosnaca
-            A = points[0];
-            B = points[1];
-            C = points[2];
-        }
-
-        public void SetPoints(Point a, Point b, Point c)
-        {
-            List<Point> points = new List<Point>() { a, b, c };
-            points.Sort((x, y) => x.Y.CompareTo(y.Y));//rosnaca
-            A = points[0];
-            B = points[1];
-            C = points[2];
+            A = a;
+            B = b;
+            C = c;
         }
 
         public Triangle2D(Vector<float> a, Vector<float> b, Vector<float> c)
         {
-            List<Vector<float>> points = new List<Vector<float>>() { a, b, c };
-            points.Sort((x, y) => x[2].CompareTo(y[2]));//rosnaca
-            VectorA = points[0];
-            VectorB = points[1];
-            VectorC = points[2];
+            VectorA = a;
+            VectorB = b;
+            VectorC = c;
         }
 
         public List<Point> GetVertices()
@@ -60,34 +51,34 @@ namespace GK_Projekt4_3DScene
 
         public List<ActiveEdge> GetActiveEdges()
         {
-            List<Point> points = new List<Point>() { a, b, c };
+            List<Point> points = new List<Point>() { this.A, this.B, this.C };
             points.Sort((x, y) => x.Y.CompareTo(y.Y));//rosnaca
-            A = points[0];
-            B = points[1];
-            C = points[2];
+            var a = points[0];
+            var b = points[1];
+            var c = points[2];
 
             List<ActiveEdge> edges = new List<ActiveEdge>();
             double dx, dy, m;
-            dx = C.X - B.X;
-            dy = C.Y - B.Y;
+            dx = c.X - b.X;
+            dy = c.Y - b.Y;
             if (dy != 0)
             {
                 m = dx / dy;
-                edges.Add(new ActiveEdge(C.Y, B.Y, B.X, m));
+                edges.Add(new ActiveEdge(c.Y, b.Y, b.X, m));
             }
-            dx = C.X - A.X;
-            dy = C.Y - A.Y;
+            dx = c.X - a.X;
+            dy = c.Y - a.Y;
             if (dy != 0)
             {
                 m = dx / dy;
-                edges.Add(new ActiveEdge(C.Y, A.Y, A.X, m));
+                edges.Add(new ActiveEdge(c.Y, a.Y, a.X, m));
             }
-            dx = B.X - A.X;
-            dy = B.Y - A.Y;
+            dx = b.X - a.X;
+            dy = b.Y - a.Y;
             if (dy != 0)
             {
                 m = dx / dy;
-                edges.Add(new ActiveEdge(B.Y, A.Y, A.X, m));
+                edges.Add(new ActiveEdge(b.Y, a.Y, a.X, m));
             }
             return edges;
         }

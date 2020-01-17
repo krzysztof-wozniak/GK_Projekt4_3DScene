@@ -62,7 +62,6 @@ namespace GK_Projekt4_3DScene
         }
 
 
-
         private static bool isInRange(Vector<float> v)
         {
             if (v[0] <= -1 || v[0] >= 1 || v[1] <= -1 || v[1] >= 1)

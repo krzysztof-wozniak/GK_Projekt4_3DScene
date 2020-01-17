@@ -10,8 +10,7 @@ namespace GK_Projekt4_3DScene
 {
     public class Engine
     {
-         
-
+        private float[,] zBuffer;
         
         public void DrawModel(Model3D model3d, DirectBitmap image, Camera camera)
         {
@@ -22,31 +21,22 @@ namespace GK_Projekt4_3DScene
             MapModel(model2d, image.Width, image.Height);
             foreach(var t in model2d.Triangles)
             {
-                Drawer.FillPolygonConstColor(t, image, t.Color);
+                Drawer.FillPolygon(t, image, t.Color, ref zBuffer);
                 Drawer.DrawPolygon(t, image);
             }
         }
 
-        private void MapModel(Model2D model, int imageWidth, int imageHeight)
-        {
-            for(int i = 0; i < model.Triangles.Count; i++)
-            {
-                Point a, b, c;
-                a = new Point((int)((model.Triangles[i].VectorA[0] + 1) * (float)imageWidth / 2f),
-                        (int)((model.Triangles[i].VectorA[1] + 1f) * (float)imageHeight / 2f));
-                b = new Point((int)((model.Triangles[i].VectorB[0] + (float)1) * (float)imageWidth / 2f),
-                        (int)((model.Triangles[i].VectorB[1] + 1f) * (float)imageHeight / 2f));
-                c = new Point((int)((model.Triangles[i].VectorC[0] + 1f) * (float)imageWidth / 2f),
-                        (int)((model.Triangles[i].VectorC[1] + 1f) * (float)imageHeight / 2f));
-
-                model.Triangles[i].SetPoints(a, b, c);
-            };
-        }
-
         public void DrawModels(List<Model3D> models, DirectBitmap image, Camera camera)
         {
+            zBuffer = new float[image.Width, image.Height];
+            for(int i = 0; i < zBuffer.GetLength(0); i++)
+            {
+                for(int j = 0; j < zBuffer.GetLength(1); j++)
+                {
+                    zBuffer[i, j] = float.MaxValue;
+                }
+            }
             List<Model2D> models2d = new List<Model2D>();
-
             foreach (var model in models.Where(m => m.Visible))
             {
                 Matrix<float> transformationMatrix = camera.CreatePerspectiveFieldOfView().Multiply(camera.CreateLookAt()).Multiply(model.GetModelMatrix());
@@ -58,15 +48,15 @@ namespace GK_Projekt4_3DScene
 
             foreach (var model2d in models2d)
             {
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < model2d.Triangles.Count; i++)
                 {
-                    Drawer.FillPolygonConstColor(model2d.Triangles[i], image, model2d.Triangles[i].Color);
+                    Drawer.FillPolygon(model2d.Triangles[i], image, model2d.Triangles[i].Color, ref zBuffer);
                 }
-                for (int i = 0; i < 8; i++)
-                {
-                    Drawer.DrawPolygon(model2d.Triangles[i], image);
-                }
-                //foreach (var t in model2d.Triangles)
+                //for (int i = 0; i < model2d.Triangles.Count; i++)
+                //{
+                //    Drawer.DrawPolygon(model2d.Triangles[i], image);
+                //}
+                ////foreach (var t in model2d.Triangles)
                 //{
                 //    Drawer.DrawPolygon(t, image);
                 //    //Drawer.FillPolygonConstColor(t, image, t.Color);
@@ -82,5 +72,24 @@ namespace GK_Projekt4_3DScene
 
 
         }
+
+        private void MapModel(Model2D model, int imageWidth, int imageHeight)
+        {
+            for (int i = 0; i < model.Triangles.Count; i++)
+            {
+                Point a, b, c;
+                a = new Point((int)((model.Triangles[i].VectorA[0] + 1) * (float)imageWidth / 2f),
+                        (int)((model.Triangles[i].VectorA[1] + 1f) * (float)imageHeight / 2f));
+                b = new Point((int)((model.Triangles[i].VectorB[0] + (float)1) * (float)imageWidth / 2f),
+                        (int)((model.Triangles[i].VectorB[1] + 1f) * (float)imageHeight / 2f));
+                c = new Point((int)((model.Triangles[i].VectorC[0] + 1f) * (float)imageWidth / 2f),
+                        (int)((model.Triangles[i].VectorC[1] + 1f) * (float)imageHeight / 2f));
+
+                model.Triangles[i].A = a;
+                model.Triangles[i].B = b;
+                model.Triangles[i].C = c;
+            };
+        }
+
     }
 }

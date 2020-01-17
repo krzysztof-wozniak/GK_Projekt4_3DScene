@@ -9,8 +9,16 @@ namespace GK_Projekt4_3DScene
 {
     public static class Drawer
     {
-        public static void FillPolygonConstColor(Triangle2D t, DirectBitmap image, Color c)
+        private static Random r = new Random();
+
+        public static void FillPolygon(Triangle2D t, DirectBitmap image, Color c, ref float[,] zbuffer)
         {
+            float zA = t.VectorA[2];
+            float zB = t.VectorB[2];
+            float zC = t.VectorC[2];
+            Point A = t.A;
+            Point B = t.B;
+            Point C = t.C;
             var edges = t.GetActiveEdges();
             List<ActiveEdge>[] ET = new List<ActiveEdge>[image.Height];
             foreach (ActiveEdge e in edges)
@@ -47,7 +55,13 @@ namespace GK_Projekt4_3DScene
                         int x2 = (int)Math.Round(AET[j + 1].x);
                         while (x1 <= x2)
                         {
-                            image.SetPixel(x1++, i, c);
+                            float z = Interpolate(A, B, C, new Point(x1, i), zA, zB, zC);
+                            if (z <= zbuffer[x1, i])
+                            {
+                                image.SetPixel(x1, i, c);
+                                zbuffer[x1, i] = z;
+                            }
+                            x1++;
                         }
                     }
                     AET.RemoveAll(x => x.yMax - 1 == i);
@@ -60,29 +74,13 @@ namespace GK_Projekt4_3DScene
 
         }
 
-        private static Random r = new Random();
         public static void DrawPolygon(Triangle2D t, DirectBitmap image)
         {
             using (Graphics g = Graphics.FromImage(image.Bitmap))
             {
-                //Random r = new Random();
-                int a = 0;
-                if (a == 1)
-                {
-
-
-                    Color c = Color.FromArgb(r.Next(0, 255), r.Next(0, 255), r.Next(0, 255));
-                    Pen p = new Pen(c);
-                    g.DrawLine(p, t.A, t.B);
-                    g.DrawLine(p, t.B, t.C);
-                    g.DrawLine(p, t.C, t.A);
-                }
-                else
-                {
-                    g.DrawLine(Pens.Black, t.A, t.B);
-                    g.DrawLine(Pens.Black, t.B, t.C);
-                    g.DrawLine(Pens.Black, t.C, t.A);
-                }
+                g.DrawLine(Pens.Black, t.A, t.B);
+                g.DrawLine(Pens.Black, t.B, t.C);
+                g.DrawLine(Pens.Black, t.C, t.A);
             }
         }
 
@@ -92,6 +90,32 @@ namespace GK_Projekt4_3DScene
             {
                 DrawPolygon(t, image);
             }
+        }
+
+        /// <summary>
+        /// Interpolates aValue from point a, bValue from point b and cValue from point c to the point p. 
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="c"></param>
+        /// <param name="p"></param>
+        /// <param name="aValue"></param>
+        /// <param name="bValue"></param>
+        /// <param name="cValue"></param>
+        /// <returns></returns>
+        public static float Interpolate(Point a, Point b, Point c, Point p, float aValue, float bValue, float cValue)
+        {
+            float denominator = (b.Y - c.Y) * (a.X - c.X) + (c.X - b.X) * (a.Y - c.Y);
+
+            float counter1 = (b.Y - c.Y) * (p.X - c.X) + (c.X - b.X) * (p.Y - c.Y);
+
+            float counter2 = (c.Y - a.Y) * (p.X - c.X) + (a.X - c.X) * (p.Y - c.Y);
+
+            float lambda1 = counter1 / denominator;
+            float lambda2 = counter2 / denominator;
+            float lambda3 = 1f - lambda1 - lambda2;
+
+            return aValue * lambda1 + bValue * lambda2 + cValue * lambda3;
         }
     }
 }
