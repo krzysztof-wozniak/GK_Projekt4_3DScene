@@ -63,6 +63,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Rendering\LightModel.cs" />
     <Compile Include="Rendering\Model2D.cs" />
     <Compile Include="World\Model3D.cs" />
     <Compile Include="Rendering\PixelShader.cs" />

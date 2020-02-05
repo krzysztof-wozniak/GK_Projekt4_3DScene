@@ -22,11 +22,23 @@ namespace GK_Projekt4_3DScene
 
         public float ZBufferC { get; set; }
 
-        public Vector<float> VectorA { get; set; } //in range <-1, 1>, before mapping
+        public Vector<float> TransformedA { get; set; } //in range <-1, 1>, before mapping
 
-        public Vector<float> VectorB { get; set; } //as above
+        public Vector<float> TransformedB { get; set; } //as above
 
-        public Vector<float> VectorC { get; set; } //as above
+        public Vector<float> TransformedC { get; set; } //as above
+
+        public Vector<float> WorldA { get; set; }
+
+        public Vector<float> WorldB { get; set; }
+
+        public Vector<float> WorldC { get; set; }
+
+        public Vector<float> NormalVectorA { get; set; }
+
+        public Vector<float> NormalVectorB { get; set; }
+
+        public Vector<float> NormalVectorC { get; set; }
 
         public Color Color { get; set; }
 
@@ -39,9 +51,9 @@ namespace GK_Projekt4_3DScene
 
         public Triangle2D(Vector<float> a, Vector<float> b, Vector<float> c)
         {
-            VectorA = a;
-            VectorB = b;
-            VectorC = c;
+            TransformedA = a;
+            TransformedB = b;
+            TransformedC = c;
         }
 
         public List<Point> GetVertices()

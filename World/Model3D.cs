@@ -11,6 +11,9 @@ namespace GK_Projekt4_3DScene
 {
     public class Model3D
     {
+        public Color Color { get; set; }
+
+
         public static Random random = new Random();
 
         public List<Triangle3D> Triangles { get; set; }
@@ -23,7 +26,7 @@ namespace GK_Projekt4_3DScene
 
         public Vector<float> Scale { get; set; } = Vector<float>.Build.Dense(3, 1f);
 
-        public Vector<float> MiddlePoint { get; set; } = Vector<float>.Build.Dense(3, 0f);
+        public Vector<float> MiddlePoint { get; set; }
 
         public bool Visible { get; set; } = true;
 
@@ -78,13 +81,13 @@ namespace GK_Projekt4_3DScene
 
         }
 
-        public static Model3D CreatePyramid(int n, float height, float radius)
+        public static Model3D CreateCone(int n, float height, float radius, Color color)
         {
             Model3D cone = new Model3D() { Triangles = new List<Triangle3D>() };
-            
+            cone.Color = color;
             var builder = Vector<float>.Build;
+            cone.MiddlePoint = builder.DenseOfArray(new float[] { 0f, 0f, height / 2, 1f });
             Vector<float> p0 = builder.DenseOfArray(new float[] { 0f, 0f, 0f, 1f }); //base center
-            cone.MiddlePoint = p0;
             Vector<float> p1 = builder.DenseOfArray(new float[] { 0f, 0f, height, 1f }); //wierzcholek gorny
             Vector<float>[] basePoints = new Vector<float>[n];//cone base points
             for(int i = 0; i < n; i++)
@@ -104,12 +107,13 @@ namespace GK_Projekt4_3DScene
             cone.Triangles.Add(new Triangle3D(basePoints[n - 1], basePoints[0], p0));
             cone.Triangles.Add(new Triangle3D(basePoints[n - 1], basePoints[0], p1));
 
-            //Color:
-            for(int i = 0; i < cone.Triangles.Count; i++)
-            {
-                cone.Triangles[i].Color = Color.FromArgb(random.Next(50, 200), random.Next(50, 200), random.Next(50, 200));
-                //cone.Triangles[i].Color = Color.DarkGreen;
-            }
+            //Kazdy model ma jeden model, juz nie potrzeba w kazdym modelu
+            ////Color:
+            //for(int i = 0; i < cone.Triangles.Count; i++)
+            //{
+            //    cone.Triangles[i].Color = Color.FromArgb(random.Next(50, 200), random.Next(50, 200), random.Next(50, 200));
+            //    //cone.Triangles[i].Color = Color.DarkGreen;
+            //}
 
             //normal vectors:
             //parzyste - podstawa
@@ -118,6 +122,8 @@ namespace GK_Projekt4_3DScene
                 cone.Triangles[i].NormalVectorA = builder.DenseOfArray(new float[] { 0, 0, -1 }); //wektor w dol
                 cone.Triangles[i].NormalVectorB = builder.DenseOfArray(new float[] { 0, 0, -1 });
                 cone.Triangles[i].NormalVectorC = builder.DenseOfArray(new float[] { 0, 0, -1 });
+
+                //do poprawy, teraz chyba jest ostroslup, chce stozek
 
                 Vector<float> BAVector = cone.Triangles[i].B.Subtract(cone.Triangles[i].A).SubVector(0, 3);
                 Vector<float> CAVector = cone.Triangles[i].C.Subtract(cone.Triangles[i].A).SubVector(0, 3);
@@ -131,6 +137,214 @@ namespace GK_Projekt4_3DScene
             }
 
             return cone;
+        }
+
+
+        //Kazda sciana podzielona na n x m trojkatow
+        public static Model3D CreateCuboid(int n, int m, float xLength, float yLength, float zLength, Color color)
+        {
+            Model3D cuboid = new Model3D() { Triangles = new List<Triangle3D>() };
+            var builder = Vector<float>.Build;
+            cuboid.Color = color;
+            cuboid.MiddlePoint = builder.DenseOfArray(new float[] { xLength / 2, yLength / 2, zLength / 2, 1f });
+
+            Vector<float>[] points = new Vector<float>[8];
+
+            
+            
+            points[0] = builder.DenseOfArray(new float[] { 0f, 0f, 0f, 1f });
+            points[1] = builder.DenseOfArray(new float[] { xLength, 0f, 0f, 1f });
+            points[2] = builder.DenseOfArray(new float[] { xLength, yLength, 0f, 1f });
+            points[3] = builder.DenseOfArray(new float[] { 0f, yLength, 0f, 1f });
+
+            points[4] = builder.DenseOfArray(new float[] { 0f, 0f, zLength, 1f });
+            points[5] = builder.DenseOfArray(new float[] { xLength, 0f, zLength, 1f });
+            points[6] = builder.DenseOfArray(new float[] { xLength, yLength, zLength, 1f });
+            points[7] = builder.DenseOfArray(new float[] { 0f, yLength, zLength, 1f });
+
+
+            Vector<float>[,] vectors = new Vector<float>[n + 1, m + 1];
+
+
+            //plaszczyzna XY:
+            float xJump = xLength / (float)n;
+            float yJump = yLength / (float)m;
+            float zJump = 0;
+            for (int i = 0; i < n + 1; i++)
+            {
+                for(int j = 0; j < m + 1; j++)
+                {
+                    vectors[i, j] =  builder.DenseOfArray(new float[] { i * xJump, j * yJump });
+                }
+            }
+            for(int i = 0; i < n; i++)
+            {
+                for(int j = 0; j < m; j++)
+                {
+                    Triangle3D t = new Triangle3D(
+                         builder.DenseOfArray(new float[] { vectors[i, j][0], vectors[i, j][1], 0f, 1f }),
+                         builder.DenseOfArray(new float[] { vectors[i, j + 1][0], vectors[i, j + 1][1], 0f, 1f }),
+                         builder.DenseOfArray(new float[] { vectors[i + 1, j + 1][0], vectors[i + 1, j + 1][1], 0f, 1f })
+                         );
+                    t.NormalVectorA = builder.DenseOfArray(new float[] { 0f, 0f, -1f });
+                    t.NormalVectorB = builder.DenseOfArray(new float[] { 0f, 0f, -1f });
+                    t.NormalVectorC = builder.DenseOfArray(new float[] { 0f, 0f, -1f });
+                    cuboid.Triangles.Add(t);
+
+
+                    t = new Triangle3D(
+                         builder.DenseOfArray(new float[] { vectors[i, j][0], vectors[i, j][1], 0f, 1f }),
+                         builder.DenseOfArray(new float[] { vectors[i + 1, j][0], vectors[i + 1, j][1], 0f, 1f }),
+                         builder.DenseOfArray(new float[] { vectors[i + 1, j + 1][0], vectors[i + 1, j + 1][1], 0f, 1f })
+                         );
+                    t.NormalVectorA = builder.DenseOfArray(new float[] { 0f, 0f, -1f });
+                    t.NormalVectorB = builder.DenseOfArray(new float[] { 0f, 0f, -1f });
+                    t.NormalVectorC = builder.DenseOfArray(new float[] { 0f, 0f, -1f });
+                    cuboid.Triangles.Add(t);
+
+                    t = new Triangle3D(
+                         builder.DenseOfArray(new float[] { vectors[i, j][0], vectors[i, j][1], zLength, 1f }),
+                         builder.DenseOfArray(new float[] { vectors[i, j + 1][0], vectors[i, j + 1][1], zLength, 1f }),
+                         builder.DenseOfArray(new float[] { vectors[i + 1, j + 1][0], vectors[i + 1, j + 1][1], zLength, 1f })
+                         );
+                    t.NormalVectorA = builder.DenseOfArray(new float[] { 0f, 0f, 1f });
+                    t.NormalVectorB = builder.DenseOfArray(new float[] { 0f, 0f, 1f });
+                    t.NormalVectorC = builder.DenseOfArray(new float[] { 0f, 0f, 1f });
+                    cuboid.Triangles.Add(t);
+
+                    t = new Triangle3D(
+                         builder.DenseOfArray(new float[] { vectors[i, j][0], vectors[i, j][1], zLength, 1f }),
+                         builder.DenseOfArray(new float[] { vectors[i + 1, j][0], vectors[i + 1, j][1], zLength, 1f }),
+                         builder.DenseOfArray(new float[] { vectors[i + 1, j + 1][0], vectors[i + 1, j + 1][1], zLength, 1f })
+                         );
+                    t.NormalVectorA = builder.DenseOfArray(new float[] { 0f, 0f, 1f });
+                    t.NormalVectorB = builder.DenseOfArray(new float[] { 0f, 0f, 1f });
+                    t.NormalVectorC = builder.DenseOfArray(new float[] { 0f, 0f, 1f });
+                    cuboid.Triangles.Add(t);
+                }
+            }
+
+            //Plaszczyzna YZ:
+            xJump = 0;
+            yJump = yLength / (float)n;
+            zJump = zLength / (float)m;
+
+            for (int i = 0; i < n + 1; i++)
+            {
+                for (int j = 0; j < m + 1; j++)
+                {
+                    vectors[i, j] = builder.DenseOfArray(new float[] { i * yJump, j * zJump });
+                }
+            }
+            
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    Triangle3D t = new Triangle3D(
+                         builder.DenseOfArray(new float[] { 0f, vectors[i, j][0], vectors[i, j][1], 1f }),
+                         builder.DenseOfArray(new float[] { 0f, vectors[i, j + 1][0], vectors[i, j + 1][1], 1f }),
+                         builder.DenseOfArray(new float[] { 0f, vectors[i + 1, j + 1][0], vectors[i + 1, j + 1][1], 1f })
+                         );
+                    t.NormalVectorA = builder.DenseOfArray(new float[] { -1f, 0f, 0f });
+                    t.NormalVectorB = builder.DenseOfArray(new float[] { -1f, 0f, 0f });
+                    t.NormalVectorC = builder.DenseOfArray(new float[] { -1f, 0f, 0f });
+                    cuboid.Triangles.Add(t);
+
+                    t = new Triangle3D(
+                         builder.DenseOfArray(new float[] { 0f, vectors[i, j][0], vectors[i, j][1], 1f }),
+                         builder.DenseOfArray(new float[] { 0f, vectors[i + 1, j][0], vectors[i + 1, j][1], 1f }),
+                         builder.DenseOfArray(new float[] { 0f, vectors[i + 1, j + 1][0], vectors[i + 1, j + 1][1], 1f })
+                         );
+                    t.NormalVectorA = builder.DenseOfArray(new float[] { -1f, 0f, 0f });
+                    t.NormalVectorB = builder.DenseOfArray(new float[] { -1f, 0f, 0f });
+                    t.NormalVectorC = builder.DenseOfArray(new float[] { -1f, 0f, 0f });
+                    cuboid.Triangles.Add(t);
+
+
+                    t = new Triangle3D(
+                         builder.DenseOfArray(new float[] { xLength, vectors[i, j][0], vectors[i, j][1], 1f }),
+                         builder.DenseOfArray(new float[] { xLength, vectors[i, j + 1][0], vectors[i, j + 1][1], 1f }),
+                         builder.DenseOfArray(new float[] { xLength, vectors[i + 1, j + 1][0], vectors[i + 1, j + 1][1], 1f })
+                         );
+                    t.NormalVectorA = builder.DenseOfArray(new float[] { 1f, 0f, 0f });
+                    t.NormalVectorB = builder.DenseOfArray(new float[] { 1f, 0f, 0f });
+                    t.NormalVectorC = builder.DenseOfArray(new float[] { 1f, 0f, 0f });
+                    cuboid.Triangles.Add(t);
+
+                    t = new Triangle3D(
+                         builder.DenseOfArray(new float[] { xLength, vectors[i, j][0], vectors[i, j][1], 1f }),
+                         builder.DenseOfArray(new float[] { xLength, vectors[i + 1, j][0], vectors[i + 1, j][1], 1f }),
+                         builder.DenseOfArray(new float[] { xLength, vectors[i + 1, j + 1][0], vectors[i + 1, j + 1][1], 1f })
+                         );
+                    t.NormalVectorA = builder.DenseOfArray(new float[] { 1f, 0f, 0f });
+                    t.NormalVectorB = builder.DenseOfArray(new float[] { 1f, 0f, 0f });
+                    t.NormalVectorC = builder.DenseOfArray(new float[] { 1f, 0f, 0f });
+                    cuboid.Triangles.Add(t);
+                }
+            }
+
+            //Plaszczyzna XZ:
+            xJump = xLength / (float)n;
+            yJump = 0;
+            zJump = zLength / (float)m;
+
+            for (int i = 0; i < n + 1; i++)
+            {
+                for (int j = 0; j < m + 1; j++)
+                {
+                    vectors[i, j] = builder.DenseOfArray(new float[] { i * xJump, j * zJump });
+                }
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    Triangle3D t = new Triangle3D(
+                         builder.DenseOfArray(new float[] { vectors[i, j][0], 0f, vectors[i, j][1], 1f }),
+                         builder.DenseOfArray(new float[] { vectors[i, j + 1][0], 0f, vectors[i, j + 1][1], 1f }),
+                         builder.DenseOfArray(new float[] { vectors[i + 1, j + 1][0], 0f, vectors[i + 1, j + 1][1], 1f })
+                         );
+                    t.NormalVectorA = builder.DenseOfArray(new float[] { 0f, -1f, 0f });
+                    t.NormalVectorB = builder.DenseOfArray(new float[] { 0f, -1f, 0f });
+                    t.NormalVectorC = builder.DenseOfArray(new float[] { 0f, -1f, 0f });
+                    cuboid.Triangles.Add(t);
+
+                    t = new Triangle3D(
+                         builder.DenseOfArray(new float[] { vectors[i, j][0], 0f, vectors[i, j][1], 1f }),
+                         builder.DenseOfArray(new float[] { vectors[i + 1, j][0], 0f, vectors[i + 1, j][1], 1f }),
+                         builder.DenseOfArray(new float[] { vectors[i + 1, j + 1][0], 0f, vectors[i + 1, j + 1][1], 1f })
+                         );
+                    t.NormalVectorA = builder.DenseOfArray(new float[] { 0f, -1f, 0f });
+                    t.NormalVectorB = builder.DenseOfArray(new float[] { 0f, -1f, 0f });
+                    t.NormalVectorC = builder.DenseOfArray(new float[] { 0f, -1f, 0f });
+                    cuboid.Triangles.Add(t);
+
+
+                    t = new Triangle3D(
+                          builder.DenseOfArray(new float[] { vectors[i, j][0], yLength, vectors[i, j][1], 1f }),
+                          builder.DenseOfArray(new float[] { vectors[i, j + 1][0], yLength, vectors[i, j + 1][1], 1f }),
+                          builder.DenseOfArray(new float[] { vectors[i + 1, j + 1][0], yLength, vectors[i + 1, j + 1][1], 1f })
+                          );
+                    t.NormalVectorA = builder.DenseOfArray(new float[] { 0f, 1f, 0f });
+                    t.NormalVectorB = builder.DenseOfArray(new float[] { 0f, 1f, 0f });
+                    t.NormalVectorC = builder.DenseOfArray(new float[] { 0f, 1f, 0f });
+                    cuboid.Triangles.Add(t);
+
+                    t = new Triangle3D(
+                         builder.DenseOfArray(new float[] { vectors[i, j][0], yLength, vectors[i, j][1], 1f }),
+                         builder.DenseOfArray(new float[] { vectors[i + 1, j][0], yLength, vectors[i + 1, j][1], 1f }),
+                         builder.DenseOfArray(new float[] { vectors[i + 1, j + 1][0], yLength, vectors[i + 1, j + 1][1], 1f })
+                         );
+                    t.NormalVectorA = builder.DenseOfArray(new float[] { 0f, 1f, 0f });
+                    t.NormalVectorB = builder.DenseOfArray(new float[] { 0f, 1f, 0f });
+                    t.NormalVectorC = builder.DenseOfArray(new float[] { 0f, 1f, 0f });
+                    cuboid.Triangles.Add(t);
+                }
+            }
+
+            return cuboid;
         }
     }
 }

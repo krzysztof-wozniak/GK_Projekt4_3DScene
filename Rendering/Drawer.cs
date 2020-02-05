@@ -13,9 +13,9 @@ namespace GK_Projekt4_3DScene
 
         public static void FillPolygon(Triangle2D t, DirectBitmap image, Color c, ref float[,] zbuffer)
         {
-            float zA = t.VectorA[2];
-            float zB = t.VectorB[2];
-            float zC = t.VectorC[2];
+            float zA = t.TransformedA[2];
+            float zB = t.TransformedB[2];
+            float zC = t.TransformedC[2];
             Point A = t.A;
             Point B = t.B;
             Point C = t.C;
