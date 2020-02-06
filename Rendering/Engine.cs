@@ -48,27 +48,43 @@ namespace GK_Projekt4_3DScene
                 Matrix<float> modelMatrix = model.GetModelMatrix();
                 Matrix<float> transformationMatrix = camera.CreatePerspectiveFieldOfView().Multiply(camera.CreateLookAt()).Multiply(modelMatrix);
                 Model2D model2d = VertexShader.TransformModel(model, transformationMatrix, camera, lights);
+                model2d.ka = model.ka;
+                model2d.ks = model.ks;
+                model2d.kd = model.kd;
+                model2d.m = model.m;
                 model2d.Color = model.Color;
                 MapModel(model2d, image.Width, image.Height);
                 if (model2d != null)
                     models2d.Add(model2d);
             }
-
-            foreach (var model2d in models2d)
+            switch(this.LightModel)
             {
-                for (int i = 0; i < model2d.Triangles.Count; i++)
-                {
-                    Drawer.FillPolygon(model2d.Triangles[i], image, model2d.Color, ref zBuffer);
-                }
+                case LightModel.Constant:
+                    foreach (var model2d in models2d)
+                    {
+                        for (int i = 0; i < model2d.Triangles.Count; i++)
+                        {
+                            Drawer.FillPolygon(model2d.Triangles[i], image, model2d.Color, ref zBuffer, lights,
+                                model2d.m, model2d.kd, model2d.ks, model2d.ka);
+                        }
+                    }
+                    break;
             }
+            //foreach (var model2d in models2d)
+            //{
+            //    for (int i = 0; i < model2d.Triangles.Count; i++)
+            //    {
+            //        Drawer.FillPolygon(model2d.Triangles[i], image, model2d.Color, ref zBuffer);
+            //    }
+            //}
 
-            foreach (var model2d in models2d)
-            {
-                for (int i = 0; i < model2d.Triangles.Count; i++)
-                {
-                    Drawer.DrawModel(model2d, image);
-                }
-            }
+            //foreach (var model2d in models2d)
+            //{
+            //    for (int i = 0; i < model2d.Triangles.Count; i++)
+            //    {
+            //        Drawer.DrawModel(model2d, image);
+            //    }
+            //}
 
 
         }

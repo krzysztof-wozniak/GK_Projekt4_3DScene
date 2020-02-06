@@ -43,28 +43,28 @@ namespace GK_Projekt4_3DScene
                     continue;
                 Triangle2D t = new Triangle2D(a, b, c);
 
-                //t.WorldA = TransformVector(triangle3D.A, modelMatrix);
-                //t.WorldB = TransformVector(triangle3D.B, modelMatrix);
-                //t.WorldC = TransformVector(triangle3D.C, modelMatrix);
+                t.WorldA = TransformVector(triangle3D.A, modelMatrix).SubVector(0, 3);
+                t.WorldB = TransformVector(triangle3D.B, modelMatrix).SubVector(0, 3);
+                t.WorldC = TransformVector(triangle3D.C, modelMatrix).SubVector(0, 3);
 
-                //t.NormalVectorA = TransformVector(triangle3D.NormalVectorA, modelMatrix);
-                //t.NormalVectorB = TransformVector(triangle3D.NormalVectorB, modelMatrix);
-                //t.NormalVectorC = TransformVector(triangle3D.NormalVectorC, modelMatrix);
+                t.NormalVectorA = TransformVector(triangle3D.NormalVectorA, modelMatrix.Transpose()).SubVector(0, 3);
+                t.NormalVectorB = TransformVector(triangle3D.NormalVectorB, modelMatrix.Transpose()).SubVector(0, 3);
+                t.NormalVectorC = TransformVector(triangle3D.NormalVectorC, modelMatrix.Transpose()).SubVector(0, 3);
 
-                //t.CameraVectorA = camera.CameraPosition - t.WorldA.SubVector(0, 3);
-                //t.CameraVectorB = camera.CameraPosition - t.WorldB.SubVector(0, 3);
-                //t.CameraVectorC = camera.CameraPosition - t.WorldC.SubVector(0, 3);
+                t.CameraVectorA = camera.CameraPosition - t.WorldA.SubVector(0, 3);
+                t.CameraVectorB = camera.CameraPosition - t.WorldB.SubVector(0, 3);
+                t.CameraVectorC = camera.CameraPosition - t.WorldC.SubVector(0, 3);
 
-                //t.LightVectorsA = new List<Vector<float>>();
-                //t.LightVectorsB = new List<Vector<float>>();
-                //t.LightVectorsC = new List<Vector<float>>();
+                t.LightVectorsA = new List<Vector<float>>();
+                t.LightVectorsB = new List<Vector<float>>();
+                t.LightVectorsC = new List<Vector<float>>();
 
-                //foreach(var light in lights)
-                //{
-                //    t.LightVectorsA.Add(light.LightPosition - t.WorldA.SubVector(0, 3));
-                //    t.LightVectorsB.Add(light.LightPosition - t.WorldB.SubVector(0, 3));
-                //    t.LightVectorsC.Add(light.LightPosition - t.WorldC.SubVector(0, 3));
-                //}
+                foreach (var light in lights)
+                {
+                    t.LightVectorsA.Add(light.LightPosition - t.WorldA.SubVector(0, 3));
+                    t.LightVectorsB.Add(light.LightPosition - t.WorldB.SubVector(0, 3));
+                    t.LightVectorsC.Add(light.LightPosition - t.WorldC.SubVector(0, 3));
+                }
 
                 t.Color = triangle3D.Color;
                 model2D.Triangles.Add(t);

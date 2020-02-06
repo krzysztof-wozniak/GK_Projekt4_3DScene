@@ -1,4 +1,4 @@
-﻿using GK_Projekt4_3DScene.Extentions;
+﻿using GK_Projekt4_3DScene;
 using MathNet.Numerics.LinearAlgebra;
 using System;
 using System.Collections.Generic;
@@ -13,6 +13,13 @@ namespace GK_Projekt4_3DScene
     {
         public Color Color { get; set; }
 
+        public int m { get; set; } = 20;
+
+        public float ka { get; set; } = 0.2f;
+
+        public float kd { get; set; } = 0.5f;
+
+        public float ks { get; set; } = 0.7f;
 
         public static Random random = new Random();
 

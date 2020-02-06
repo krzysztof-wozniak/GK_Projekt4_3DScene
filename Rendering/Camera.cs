@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MathNet.Numerics.LinearAlgebra;
-using GK_Projekt4_3DScene.Extentions;
+using GK_Projekt4_3DScene;
 
 namespace GK_Projekt4_3DScene
 {

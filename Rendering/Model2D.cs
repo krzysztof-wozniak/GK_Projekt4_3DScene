@@ -12,5 +12,13 @@ namespace GK_Projekt4_3DScene
         public List<Triangle2D> Triangles { get; set; }
         
         public Color Color { get; set; }
+
+        public int m { get; set; }
+
+        public float ka { get; set; }
+
+        public float kd { get; set; }
+
+        public float ks { get; set; }
     }
 }

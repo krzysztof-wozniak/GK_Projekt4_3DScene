@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MathNet.Numerics.LinearAlgebra;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -11,8 +12,12 @@ namespace GK_Projekt4_3DScene
     {
         private static Random r = new Random();
 
-        public static void FillPolygon(Triangle2D t, DirectBitmap image, Color c, ref float[,] zbuffer)
+        public static void FillPolygon(Triangle2D t, DirectBitmap image, Color c, ref float[,] zbuffer, List<LightSource> lights, int m, float kd, float ks, float ka)
         {
+            Vector<float> cords = (t.WorldA + t.WorldB + t.WorldC).Divide(3);
+            Vector<float> N = (t.NormalVectorA + t.NormalVectorB + t.NormalVectorC).Divide(3).Normalize(2);
+            Vector<float> V = (t.CameraVectorA + t.CameraVectorB + t.CameraVectorC).Divide(3).Normalize(2);
+            Color color = PixelShader.CalculateColor(c, cords, N, V, lights, m, ka, kd, ks);
             float zA = t.TransformedA[2];
             float zB = t.TransformedB[2];
             float zC = t.TransformedC[2];
@@ -58,7 +63,7 @@ namespace GK_Projekt4_3DScene
                             float z = Interpolate(A, B, C, new Point(x1, i), zA, zB, zC);
                             if (z <= zbuffer[x1, i])
                             {
-                                image.SetPixel(x1, i, c);
+                                image.SetPixel(x1, i, color);
                                 zbuffer[x1, i] = z;
                             }
                             x1++;

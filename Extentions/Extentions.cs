@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GK_Projekt4_3DScene.Extentions
+namespace GK_Projekt4_3DScene
 {
     public static class MathExtentions
     {
