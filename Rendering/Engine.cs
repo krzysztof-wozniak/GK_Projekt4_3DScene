@@ -30,7 +30,7 @@ namespace GK_Projekt4_3DScene
         //    }
         //}
 
-        public void DrawModels(List<Model3D> models, DirectBitmap image, Camera camera)
+        public void DrawModels(List<Model3D> models, DirectBitmap image, Camera camera, List<LightSource> lights)
         {
             zBuffer = new float[image.Width, image.Height];
             for(int i = 0; i < zBuffer.GetLength(0); i++)
@@ -45,8 +45,9 @@ namespace GK_Projekt4_3DScene
 
             foreach (var model in models.Where(m => m.Visible))
             {
-                Matrix<float> transformationMatrix = camera.CreatePerspectiveFieldOfView().Multiply(camera.CreateLookAt()).Multiply(model.GetModelMatrix());
-                Model2D model2d = VertexShader.TransformModel(model, transformationMatrix);
+                Matrix<float> modelMatrix = model.GetModelMatrix();
+                Matrix<float> transformationMatrix = camera.CreatePerspectiveFieldOfView().Multiply(camera.CreateLookAt()).Multiply(modelMatrix);
+                Model2D model2d = VertexShader.TransformModel(model, transformationMatrix, camera, lights);
                 model2d.Color = model.Color;
                 MapModel(model2d, image.Width, image.Height);
                 if (model2d != null)
@@ -59,22 +60,14 @@ namespace GK_Projekt4_3DScene
                 {
                     Drawer.FillPolygon(model2d.Triangles[i], image, model2d.Color, ref zBuffer);
                 }
-                //for (int i = 0; i < model2d.Triangles.Count; i++)
-                //{
-                //    Drawer.DrawPolygon(model2d.Triangles[i], image);
-                //}
-                ////foreach (var t in model2d.Triangles)
-                //{
-                //    Drawer.DrawPolygon(t, image);
-                //    //Drawer.FillPolygonConstColor(t, image, t.Color);
-                //    //using (Graphics g = Graphics.FromImage(image.Bitmap))
-                //    //{
-                //    //    g.FillPolygon(Brushes.Red, new Point[] { t.A, t.B, t.C });
-                //    //}
-                //    //Drawer.FillPolygonConstColor(t, image, t.Color);
+            }
 
-
-                //}
+            foreach (var model2d in models2d)
+            {
+                for (int i = 0; i < model2d.Triangles.Count; i++)
+                {
+                    Drawer.DrawModel(model2d, image);
+                }
             }
 
 

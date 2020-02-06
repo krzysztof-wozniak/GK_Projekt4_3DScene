@@ -28,6 +28,8 @@ namespace GK_Projekt4_3DScene
         private int chosenCameraIndex = 0;
 
         private int frames = 0;
+
+        public List<LightSource> Lights;
         
 
 
@@ -38,14 +40,16 @@ namespace GK_Projekt4_3DScene
             Engine = new Engine() { };
             Models = new List<Model3D>();
             var builder = Vector<float>.Build;
-            Vector<float> cameraPosition = builder.DenseOfArray(new float[] { 1.2f,-1.5f, 1.5f });
+            Vector<float> cameraPosition = builder.DenseOfArray(new float[] { 1.2f, -1.5f, 1.5f });
             Vector<float> cameraTarget = builder.DenseOfArray(new float[] { 0f, 0f, 0f });
             Vector<float> cameraUpVector = builder.DenseOfArray(new float[] { 0f, 0f, -1f });
             Camera cam = new Camera(cameraPosition, cameraTarget, cameraUpVector);
             Cameras.Add(cam);
-            for(int i = 0; i < 1; i++)
-                Models.Add(Model3D.CreateCone(10, 0.7f, 0.2f, Color.Green));
-            //Models.Add(Model3D.CreateCuboid(3, 3, 1, 1, 1, Color.Red));
+            //for(int i = 0; i < 1; i++)
+            //Models.Add(Model3D.CreateCone(10, 0.7f, 0.2f, Color.Green));
+            Lights = new List<LightSource>();
+            Lights.Add(new LightSource(5f, 5f, 5f, Color.FromArgb(255, 255, 255)));
+            Models.Add(Model3D.CreateCuboid(1, 1, 0.5f, 0.5f, 0.5f, Color.Red));
             //Models[1].Position[2] = 0.5f;
             //Models[2].Position[0] = 0;
             //Models[2].Position[1] = 0;
@@ -71,7 +75,7 @@ namespace GK_Projekt4_3DScene
         {
             this.oldImage = this.image;
             this.image = new DirectBitmap(pictureBox.Width, pictureBox.Height);
-            Engine.DrawModels(Models, image, Cameras[chosenCameraIndex]);
+            Engine.DrawModels(Models, image, Cameras[chosenCameraIndex], Lights);
             pictureBox.Image = image.Bitmap;
             if (oldImage != null)
                 oldImage.Dispose();
@@ -85,7 +89,8 @@ namespace GK_Projekt4_3DScene
             //Cameras[0].CameraPosition[2] -= 0.0003f;
             //Models[0].Rotation[2] += 1f;
             //Models[0].Rotation[0] += -0.1f;
-            Models[0].Rotation[2] -= 0.3f;
+            Models[0].Rotation[1] -= 1f;
+            //Models[0].Position[0] = (float)Math.Sin(0.01f * time);
             //Models[0].Position[0] += ((float)r.NextDouble() - 0.5f) / 50f;
             //Models[0].Position[1] += ((float)r.NextDouble() - 0.5f) / 50f;
             //Models[1].Rotation[0] += 1f;

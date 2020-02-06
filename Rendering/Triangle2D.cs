@@ -16,11 +16,11 @@ namespace GK_Projekt4_3DScene
 
         public Point C { get; set; }
 
-        public float ZBufferA { get; set; }
+        //public float ZBufferA { get; set; }
 
-        public float ZBufferB { get; set; }
+        //public float ZBufferB { get; set; }
 
-        public float ZBufferC { get; set; }
+        //public float ZBufferC { get; set; }
 
         public Vector<float> TransformedA { get; set; } //in range <-1, 1>, before mapping
 
@@ -39,6 +39,19 @@ namespace GK_Projekt4_3DScene
         public Vector<float> NormalVectorB { get; set; }
 
         public Vector<float> NormalVectorC { get; set; }
+
+        public List<Vector<float>> LightVectorsA { get; set; }
+
+        public List<Vector<float>> LightVectorsB { get; set; }
+
+        public List<Vector<float>> LightVectorsC { get; set; }
+
+        public Vector<float> CameraVectorA { get; set; }
+
+        public Vector<float> CameraVectorB { get; set; }
+
+        public Vector<float> CameraVectorC { get; set; }
+
 
         public Color Color { get; set; }
 

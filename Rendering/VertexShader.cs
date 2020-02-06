@@ -28,8 +28,9 @@ namespace GK_Projekt4_3DScene
         //    return model2D;
         //}
 
-        public static Model2D TransformModel(Model3D model3D, Matrix<float> transformationMatrix)
+        public static Model2D TransformModel(Model3D model3D, Matrix<float> transformationMatrix, Camera camera, List<LightSource> lights)
         {
+            Matrix<float> modelMatrix = model3D.GetModelMatrix();
             Model2D model2D = new Model2D();
             model2D.Triangles = new List<Triangle2D>();
             Vector<float> a, b, c;
@@ -41,6 +42,30 @@ namespace GK_Projekt4_3DScene
                 if (!isInRange(a) || !isInRange(b) || !isInRange(c))
                     continue;
                 Triangle2D t = new Triangle2D(a, b, c);
+
+                //t.WorldA = TransformVector(triangle3D.A, modelMatrix);
+                //t.WorldB = TransformVector(triangle3D.B, modelMatrix);
+                //t.WorldC = TransformVector(triangle3D.C, modelMatrix);
+
+                //t.NormalVectorA = TransformVector(triangle3D.NormalVectorA, modelMatrix);
+                //t.NormalVectorB = TransformVector(triangle3D.NormalVectorB, modelMatrix);
+                //t.NormalVectorC = TransformVector(triangle3D.NormalVectorC, modelMatrix);
+
+                //t.CameraVectorA = camera.CameraPosition - t.WorldA.SubVector(0, 3);
+                //t.CameraVectorB = camera.CameraPosition - t.WorldB.SubVector(0, 3);
+                //t.CameraVectorC = camera.CameraPosition - t.WorldC.SubVector(0, 3);
+
+                //t.LightVectorsA = new List<Vector<float>>();
+                //t.LightVectorsB = new List<Vector<float>>();
+                //t.LightVectorsC = new List<Vector<float>>();
+
+                //foreach(var light in lights)
+                //{
+                //    t.LightVectorsA.Add(light.LightPosition - t.WorldA.SubVector(0, 3));
+                //    t.LightVectorsB.Add(light.LightPosition - t.WorldB.SubVector(0, 3));
+                //    t.LightVectorsC.Add(light.LightPosition - t.WorldC.SubVector(0, 3));
+                //}
+
                 t.Color = triangle3D.Color;
                 model2D.Triangles.Add(t);
             }

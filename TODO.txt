@@ -1,0 +1,2 @@
+﻿jak trzymac wektory normalne - 3 wspolrzedne czy 4 
+modele oswietlenia 
