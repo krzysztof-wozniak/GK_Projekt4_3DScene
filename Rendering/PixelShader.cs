@@ -14,6 +14,8 @@ namespace GK_Projekt4_3DScene
         public static Color CalculateColor(Color objectColor, Vector<float> worldPosition, Vector<float> N, Vector<float> V,
                                            List<LightSource> lights, int m, float ka, float kd, float ks)
         {
+            //N = N.Normalize();
+            //V = V.Normalize()
             var light = lights[0];
             Vector<float> L = (light.LightPosition - worldPosition).Normalize(2);
             Vector<float> R = 2 * N * N.CrossProduct(L) - L;

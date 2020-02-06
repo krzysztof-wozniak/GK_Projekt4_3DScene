@@ -48,8 +48,8 @@ namespace GK_Projekt4_3DScene
             //for(int i = 0; i < 1; i++)
             //Models.Add(Model3D.CreateCone(10, 0.7f, 0.2f, Color.Green));
             Lights = new List<LightSource>();
-            Lights.Add(new LightSource(0f, 0f, 0.7f, Color.FromArgb(255, 255, 255)));
-            Models.Add(Model3D.CreateCuboid(2, 2, 0.5f, 0.5f, 0.5f, Color.Red));
+            Lights.Add(new LightSource(0.1f, 0.1f, 0.7f, Color.FromArgb(255, 255, 255)));
+            Models.Add(Model3D.CreateCuboid(4, 4, 0.5f, 0.5f, 0.5f, Color.FromArgb(50, 100, 150)));
             Models.Add(Model3D.CreateCuboid(1, 1, 0.05f, 0.05f, 0.05f, Color.Green));
             //Models[1].Position[2] = 0.5f;
             //Models[2].Position[0] = 0;
@@ -98,16 +98,17 @@ namespace GK_Projekt4_3DScene
             //Models[0].Position[1] += ((float)r.NextDouble() - 0.5f) / 50f;
             //Models[1].Rotation[0] += 1f;
             //Models[1].Rotation[1] += 0.2f;
-            Cameras[0].CameraPosition[0] = 0;
-            Cameras[0].CameraPosition[1] = 0.1f;
-            Cameras[0].CameraPosition[2] = 2f;
+            Cameras[0].CameraPosition[0] = 0.7f;
+            Cameras[0].CameraPosition[1] = -0.7f;
+            Cameras[0].CameraPosition[2] = 1.5f;
             Models[0].Position[0] = 0f;
             Models[0].Position[1] = 0f;
-            Lights[0].LightPosition[0] = 0.2f*(float)Math.Sin(0.01f * time);
-            Lights[0].LightPosition[1] = 0.2f*(float)Math.Cos(0.01f * time);
+            //Lights[0].LightPosition[0] = 0.2f*(float)Math.Sin(0.1f * time);
+            //Lights[0].LightPosition[1] = 0.2f*(float)Math.Cos(0.1f * time);
             Models[1].Position = Lights[0].LightPosition;
-            //Cameras[0].CameraPosition[0] = 2 * (float)Math.Cos(0.01f * time);
-            //Cameras[0].CameraPosition[1] = 2 * (float)Math.Sin(0.01f * time);
+            Cameras[0].CameraPosition[0] = 1.3f * (float)Math.Cos(0.01f * time);
+            Cameras[0].CameraPosition[1] = 1.3f * (float)Math.Sin(0.01f * time);
+            Cameras[0].CameraPosition[2] = 1.3f * (float)Math.Sin(0.01f * time);
             label1.Text = "Camera position: \n" + Cameras[0].CameraPosition.ToVectorString() + 
                 "\n f: " + Cameras[0].FarPlaneDistance + "\n n: " + Cameras[0].NearPlaneDistance;
 

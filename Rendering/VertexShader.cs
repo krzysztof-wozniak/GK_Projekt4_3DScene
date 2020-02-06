@@ -47,13 +47,16 @@ namespace GK_Projekt4_3DScene
                 t.WorldB = TransformVector(triangle3D.B, modelMatrix).SubVector(0, 3);
                 t.WorldC = TransformVector(triangle3D.C, modelMatrix).SubVector(0, 3);
 
-                t.NormalVectorA = TransformVector(triangle3D.NormalVectorA, modelMatrix.Transpose()).SubVector(0, 3);
-                t.NormalVectorB = TransformVector(triangle3D.NormalVectorB, modelMatrix.Transpose()).SubVector(0, 3);
-                t.NormalVectorC = TransformVector(triangle3D.NormalVectorC, modelMatrix.Transpose()).SubVector(0, 3);
+                t.NormalVectorA = TransformVector(triangle3D.NormalVectorA, modelMatrix.Transpose()).SubVector(0, 3).Normalize(2);
+                t.NormalVectorB = TransformVector(triangle3D.NormalVectorB, modelMatrix.Transpose()).SubVector(0, 3).Normalize(2);
+                t.NormalVectorC = TransformVector(triangle3D.NormalVectorC, modelMatrix.Transpose()).SubVector(0, 3).Normalize(2);
 
-                t.CameraVectorA = camera.CameraPosition - t.WorldA.SubVector(0, 3);
-                t.CameraVectorB = camera.CameraPosition - t.WorldB.SubVector(0, 3);
-                t.CameraVectorC = camera.CameraPosition - t.WorldC.SubVector(0, 3);
+                t.CameraVectorA = (camera.CameraPosition - t.WorldA.SubVector(0, 3)).Normalize(2);
+                t.CameraVectorB = (camera.CameraPosition - t.WorldB.SubVector(0, 3)).Normalize(2);
+                t.CameraVectorC = (camera.CameraPosition - t.WorldC.SubVector(0, 3)).Normalize(2);
+
+                if (t.CameraVectorA.DotProduct(t.NormalVectorA) < 0)
+                    continue;
 
                 t.LightVectorsA = new List<Vector<float>>();
                 t.LightVectorsB = new List<Vector<float>>();

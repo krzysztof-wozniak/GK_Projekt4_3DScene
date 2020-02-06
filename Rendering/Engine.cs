@@ -69,6 +69,26 @@ namespace GK_Projekt4_3DScene
                         }
                     }
                     break;
+                case LightModel.Gouraud:
+                    foreach (var model2d in models2d)
+                    {
+                        for (int i = 0; i < model2d.Triangles.Count; i++)
+                        {
+                            Drawer.FillPolygonGouraud(model2d.Triangles[i], image, model2d.Color, ref zBuffer, lights,
+                                model2d.m, model2d.kd, model2d.ks, model2d.ka);
+                        }
+                    }
+                    break;
+                case LightModel.Phong:
+                    foreach (var model2d in models2d)
+                    {
+                        for (int i = 0; i < model2d.Triangles.Count; i++)
+                        {
+                            Drawer.FillPolygonPhong(model2d.Triangles[i], image, model2d.Color, ref zBuffer, lights,
+                                model2d.m, model2d.kd, model2d.ks, model2d.ka, camera);
+                        }
+                    }
+                    break;
             }
             //foreach (var model2d in models2d)
             //{

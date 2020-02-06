@@ -13,13 +13,13 @@ namespace GK_Projekt4_3DScene
     {
         public Color Color { get; set; }
 
-        public int m { get; set; } = 20;
+        public int m { get; set; } = 40;
 
         public float ka { get; set; } = 0.2f;
 
         public float kd { get; set; } = 0.5f;
 
-        public float ks { get; set; } = 0.7f;
+        public float ks { get; set; } = 1f;
 
         public static Random random = new Random();
 

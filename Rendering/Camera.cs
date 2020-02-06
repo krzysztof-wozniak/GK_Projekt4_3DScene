@@ -33,7 +33,7 @@ namespace GK_Projekt4_3DScene
 
         public float FarPlaneDistance { get; set; }
 
-        public Camera(Vector<float> cameraPosition, Vector<float> cameraTarget, Vector<float> cameraUpVector, float fieldOfView = 45f, float nearPlaneDistance = 1f,
+        public Camera(Vector<float> cameraPosition, Vector<float> cameraTarget, Vector<float> cameraUpVector, float fieldOfView = 45f, float nearPlaneDistance = 0.1f,
                       float farPlaneDistance = 20f, float aspectRatio = 1f)
         {
             CameraPosition = cameraPosition;
