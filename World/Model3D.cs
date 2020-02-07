@@ -13,7 +13,7 @@ namespace GK_Projekt4_3DScene
     {
         public Color Color { get; set; }
 
-        public int m { get; set; } = 40;
+        public int m { get; set; } = 30;
 
         public float ka { get; set; } = 0.2f;
 
@@ -354,6 +354,52 @@ namespace GK_Projekt4_3DScene
             }
 
             return cuboid;
+        }
+
+
+        public static Model3D CreateSphere(int n, int m, float radius, Color color)
+        {
+            Model3D sphere = new Model3D() { Triangles = new List<Triangle3D>() };
+            var builder = Vector<float>.Build;
+            sphere.Color = color;
+            sphere.MiddlePoint = builder.DenseOfArray(new float[] { 0f, 0f, 0f, 1f });
+            Vector<float>[,] points = new Vector<float>[n + 1, m + 1];//points
+            for (int i = 0; i < n + 1; i++)
+            {
+                float fi = (float)Math.PI * (float)i * 2.0f / (float)n;
+                fi = (float)MathExtentions.DegreeToRadian((float)i / (float)n * 180.0f);
+                for(int j = 0; j < m + 1; j++)
+                {
+                    float psi = 2.0f * (float)Math.PI * (float)j * 2.0f / (float)m;
+                    psi = (float)MathExtentions.DegreeToRadian((float)j / (float)m * 360.0f);
+                    float x = radius * (float)Math.Sin(psi) * (float)Math.Cos(fi);
+                    float y = radius * (float)Math.Sin(psi) * (float)Math.Sin(fi);
+                    float z = radius * (float)Math.Cos(psi);
+                    points[i, j] = builder.DenseOfArray(new float[] { x, y, z, 1f });
+                }
+                //basePoints[i] = builder.DenseOfArray(new float[] { radius * (float)Math.Cos(deg), radius * (float)Math.Sin(deg), 0, 1 });
+            }
+
+            for(int i = 0; i < n + 1; i += 1)
+            {
+                for(int j = 0; j < m + 1; j +=1)
+                {
+                    var t1 = new Triangle3D(points[i, j], points[i % n, (j + 1) % (m + 1)], points[(i + 1) % (n + 1), j % m]);
+                    t1.NormalVectorA = t1.A;
+                    t1.NormalVectorB = t1.B;
+                    t1.NormalVectorC = t1.C;
+                    sphere.Triangles.Add(t1);
+
+                     t1 = new Triangle3D(points[i, (j + 1) % (m + 1)], points[(i + 1) % (n + 1), j], points[(i + 1) % (n + 1), (j + 1) % (m + 1)]);
+                    t1.NormalVectorA = t1.A;
+                    t1.NormalVectorB = t1.B;
+                    t1.NormalVectorC = t1.C;
+                    sphere.Triangles.Add(t1);
+                }
+            }
+
+
+            return sphere;
         }
     }
 }

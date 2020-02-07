@@ -19,7 +19,7 @@ namespace GK_Projekt4_3DScene
             var light = lights[0];
             Vector<float> L = (light.LightPosition - worldPosition).Normalize(2);
             Vector<float> R = 2 * N * N.CrossProduct(L) - L;
-            R.Normalize(2);
+            R = R.Normalize(2);
 
             float lightR = (float)light.LightColor.R / 255f;
             float lightG = (float)light.LightColor.G / 255f;
@@ -30,14 +30,18 @@ namespace GK_Projekt4_3DScene
             float NLproduct = N[0] * L[0] + N[1] * L[1] + N[2] * L[2];//N.DotProduct(L);
             if (NLproduct < 0)
                 NLproduct = 0;
-            float VRproduct = V[0] * R[0] + V[1] * R[1] + V[2] * R[2];//N.DotProduct(L);
+            float VRproduct = V[0] * R[0] + V[1] * R[1] + V[2] * R[2];
+            //float VRproduct = V.DotProduct(R);
             VRproduct = (float)Math.Pow(VRproduct, m);
             if (VRproduct < 0)
                 VRproduct = 0;
 
-            float r = ka + kd * lightIntensR * NLproduct + ks * VRproduct;
-            float g = ka + kd * lightIntensG * NLproduct + ks * VRproduct;
-            float b = ka + kd * lightIntensB * NLproduct + ks * VRproduct;
+            float r = ka + lightIntensR * (kd * NLproduct + ks * VRproduct);
+            float b = ka + lightIntensB * (kd * NLproduct + ks * VRproduct);
+            float g = ka + lightIntensG * (kd * NLproduct + ks * VRproduct);
+            //float r = ka + lightIntensR * (ks * VRproduct);
+            //float g = ka + lightIntensG * (ks * VRproduct);
+            //float b = ka + lightIntensB * (ks * VRproduct);
 
             //float test = ks * VRproduct;
             int cR = (int)((float)objectColor.R * r);

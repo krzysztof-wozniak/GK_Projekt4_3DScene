@@ -55,7 +55,7 @@ namespace GK_Projekt4_3DScene
                 t.CameraVectorB = (camera.CameraPosition - t.WorldB.SubVector(0, 3)).Normalize(2);
                 t.CameraVectorC = (camera.CameraPosition - t.WorldC.SubVector(0, 3)).Normalize(2);
 
-                if (t.CameraVectorA.DotProduct(t.NormalVectorA) < 0)
+                if (t.CameraVectorA.DotProduct(t.NormalVectorA) < -0.1)
                     continue;
 
                 t.LightVectorsA = new List<Vector<float>>();
