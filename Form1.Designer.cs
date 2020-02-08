@@ -31,15 +31,15 @@
             this.components = new System.ComponentModel.Container();
             this.mainTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBox = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.fpsLabel = new System.Windows.Forms.Label();
-            this.timer = new System.Windows.Forms.Timer(this.components);
-            this.fpsTimer = new System.Windows.Forms.Timer(this.components);
+            this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.lightModelGroupBox = new System.Windows.Forms.GroupBox();
-            this.constantLightRadioButton = new System.Windows.Forms.RadioButton();
-            this.gouraudLightRadioButton = new System.Windows.Forms.RadioButton();
             this.phongLightRadioButton = new System.Windows.Forms.RadioButton();
+            this.gouraudLightRadioButton = new System.Windows.Forms.RadioButton();
+            this.constantLightRadioButton = new System.Windows.Forms.RadioButton();
+            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.fpsTimer = new System.Windows.Forms.Timer(this.components);
             this.mainTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -61,7 +61,7 @@
             this.mainTableLayoutPanel.RowCount = 2;
             this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 88.44444F));
             this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.55556F));
-            this.mainTableLayoutPanel.Size = new System.Drawing.Size(824, 450);
+            this.mainTableLayoutPanel.Size = new System.Drawing.Size(824, 561);
             this.mainTableLayoutPanel.TabIndex = 0;
             // 
             // pictureBox
@@ -70,38 +70,28 @@
             this.pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox.Location = new System.Drawing.Point(3, 3);
             this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(669, 391);
+            this.pictureBox.Size = new System.Drawing.Size(669, 490);
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
             this.pictureBox.Click += new System.EventHandler(this.pictureBox_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 397);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "label1";
-            // 
             // fpsLabel
             // 
             this.fpsLabel.AutoSize = true;
-            this.fpsLabel.Location = new System.Drawing.Point(678, 397);
+            this.fpsLabel.Location = new System.Drawing.Point(678, 496);
             this.fpsLabel.Name = "fpsLabel";
             this.fpsLabel.Size = new System.Drawing.Size(33, 13);
             this.fpsLabel.TabIndex = 2;
             this.fpsLabel.Text = "FPS: ";
             // 
-            // timer
+            // label1
             // 
-            this.timer.Interval = 1;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
-            // 
-            // fpsTimer
-            // 
-            this.fpsTimer.Interval = 1000;
-            this.fpsTimer.Tick += new System.EventHandler(this.fpsTimer_Tick);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 496);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "label1";
             // 
             // tableLayoutPanel1
             // 
@@ -128,17 +118,17 @@
             this.lightModelGroupBox.TabStop = false;
             this.lightModelGroupBox.Text = "Light model";
             // 
-            // constantLightRadioButton
+            // phongLightRadioButton
             // 
-            this.constantLightRadioButton.AutoSize = true;
-            this.constantLightRadioButton.Location = new System.Drawing.Point(7, 33);
-            this.constantLightRadioButton.Name = "constantLightRadioButton";
-            this.constantLightRadioButton.Size = new System.Drawing.Size(67, 17);
-            this.constantLightRadioButton.TabIndex = 0;
-            this.constantLightRadioButton.TabStop = true;
-            this.constantLightRadioButton.Text = "Constant";
-            this.constantLightRadioButton.UseVisualStyleBackColor = true;
-            this.constantLightRadioButton.CheckedChanged += new System.EventHandler(this.constantLightRadioButton_CheckedChanged);
+            this.phongLightRadioButton.AutoSize = true;
+            this.phongLightRadioButton.Location = new System.Drawing.Point(7, 81);
+            this.phongLightRadioButton.Name = "phongLightRadioButton";
+            this.phongLightRadioButton.Size = new System.Drawing.Size(96, 17);
+            this.phongLightRadioButton.TabIndex = 2;
+            this.phongLightRadioButton.TabStop = true;
+            this.phongLightRadioButton.Text = "Phong shading";
+            this.phongLightRadioButton.UseVisualStyleBackColor = true;
+            this.phongLightRadioButton.CheckedChanged += new System.EventHandler(this.phongLightRadioButton_CheckedChanged);
             // 
             // gouraudLightRadioButton
             // 
@@ -152,23 +142,33 @@
             this.gouraudLightRadioButton.UseVisualStyleBackColor = true;
             this.gouraudLightRadioButton.CheckedChanged += new System.EventHandler(this.gouraudLightRadioButton_CheckedChanged);
             // 
-            // phongLightRadioButton
+            // constantLightRadioButton
             // 
-            this.phongLightRadioButton.AutoSize = true;
-            this.phongLightRadioButton.Location = new System.Drawing.Point(7, 81);
-            this.phongLightRadioButton.Name = "phongLightRadioButton";
-            this.phongLightRadioButton.Size = new System.Drawing.Size(96, 17);
-            this.phongLightRadioButton.TabIndex = 2;
-            this.phongLightRadioButton.TabStop = true;
-            this.phongLightRadioButton.Text = "Phong shading";
-            this.phongLightRadioButton.UseVisualStyleBackColor = true;
-            this.phongLightRadioButton.CheckedChanged += new System.EventHandler(this.phongLightRadioButton_CheckedChanged);
+            this.constantLightRadioButton.AutoSize = true;
+            this.constantLightRadioButton.Location = new System.Drawing.Point(7, 33);
+            this.constantLightRadioButton.Name = "constantLightRadioButton";
+            this.constantLightRadioButton.Size = new System.Drawing.Size(67, 17);
+            this.constantLightRadioButton.TabIndex = 0;
+            this.constantLightRadioButton.TabStop = true;
+            this.constantLightRadioButton.Text = "Constant";
+            this.constantLightRadioButton.UseVisualStyleBackColor = true;
+            this.constantLightRadioButton.CheckedChanged += new System.EventHandler(this.constantLightRadioButton_CheckedChanged);
+            // 
+            // timer
+            // 
+            this.timer.Interval = 30;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
+            // fpsTimer
+            // 
+            this.fpsTimer.Interval = 1000;
+            this.fpsTimer.Tick += new System.EventHandler(this.fpsTimer_Tick);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(824, 450);
+            this.ClientSize = new System.Drawing.Size(824, 561);
             this.Controls.Add(this.mainTableLayoutPanel);
             this.Name = "Form1";
             this.Text = "Form1";

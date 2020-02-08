@@ -16,33 +16,40 @@ namespace GK_Projekt4_3DScene
         {
             N = N.Normalize(2);
             V = V.Normalize(2);
-            var light = lights[0];
-            Vector<float> L = (light.LightPosition - worldPosition).Normalize(2);
-            Vector<float> R = 2 * N * N.DotProduct(L) - L;
-            R = R.Normalize(2);
+            float r = ka;
+            float b = ka;
+            float g = ka;
+            foreach (var light in lights)
+            {
+                Vector<float> L = (light.LightPosition - worldPosition).Normalize(2);
+                Vector<float> R = 2 * N * N.DotProduct(L) - L;
+                R = R.Normalize(2);
 
-            float lightR = (float)light.LightColor.R / 255f;
-            float lightG = (float)light.LightColor.G / 255f;
-            float lightB = (float)light.LightColor.B / 255f;
-            float NLproduct = N[0] * L[0] + N[1] * L[1] + N[2] * L[2];//N.DotProduct(L);
-            //float a = N.DotProduct(L);
-            if (NLproduct < 0)
-                NLproduct = 0;
-            float VRproduct = V[0] * R[0] + V[1] * R[1] + V[2] * R[2];
-            //float VRproductb = V.DotProduct(R);
-            if (VRproduct < 0)
-                VRproduct = 0;
-            VRproduct = (float)Math.Pow(VRproduct, m);
-            float opt = (kd * NLproduct + ks * VRproduct);
+                float lightR = (float)light.LightColor.R / 255f;
+                float lightG = (float)light.LightColor.G / 255f;
+                float lightB = (float)light.LightColor.B / 255f;
+                float NLproduct = N[0] * L[0] + N[1] * L[1] + N[2] * L[2];
+                if(N[2] > 0)
+                {
+                    Console.Write("elo");
+                }
+                //NLproduct = N.DotProduct(L);
+                //if (NLproduct < 0)
+                //{
+                //    break;
+                //    NLproduct = 0;
+                //    //return Color.Blue;
+                //}
+                float VRproduct = V[0] * R[0] + V[1] * R[1] + V[2] * R[2];
+                if (VRproduct < 0)
+                    VRproduct = 0;
+                VRproduct = (float)Math.Pow(VRproduct, m);
+                float opt = (kd * NLproduct + ks * VRproduct);
 
-            float r = ka + lightR * opt;
-            float b = ka + lightG * opt;
-            float g = ka + lightB * opt;
-            //float r = ka + lightR * (kd * NLproduct);
-            //float g = ka + lightG * (kd * NLproduct);
-            //float b = ka + lightB * (kd * NLproduct);
-
-            //float test = ks * VRproduct;
+                r += lightR * opt;
+                b += lightG * opt;
+                g += lightB * opt;
+            }
             int cR = (int)((float)objectColor.R * r);
             int cG = (int)((float)objectColor.G * g);
             int cB = (int)((float)objectColor.B * b);

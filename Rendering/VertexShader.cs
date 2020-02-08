@@ -46,16 +46,30 @@ namespace GK_Projekt4_3DScene
                 t.WorldA = TransformVector(triangle3D.A, modelMatrix).SubVector(0, 3);
                 t.WorldB = TransformVector(triangle3D.B, modelMatrix).SubVector(0, 3);
                 t.WorldC = TransformVector(triangle3D.C, modelMatrix).SubVector(0, 3);
+                var MNormal = modelMatrix.Inverse().Transpose();
+                //var temp = TransformVector(triangle3D.NormalVectorA, MNormal);
+                //temp = MNormal.Multiply(triangle3D.NormalVectorA);
+                //var temp1 = TransformVector(triangle3D.NormalVectorB, modelMatrix.Inverse().Transpose());
+                //var temp2 = TransformVector(triangle3D.NormalVectorC, modelMatrix.Inverse().Transpose());
 
-                t.NormalVectorA = TransformVector(triangle3D.NormalVectorA, modelMatrix.Transpose()).SubVector(0, 3).Normalize(2);
-                t.NormalVectorB = TransformVector(triangle3D.NormalVectorB, modelMatrix.Transpose()).SubVector(0, 3).Normalize(2);
-                t.NormalVectorC = TransformVector(triangle3D.NormalVectorC, modelMatrix.Transpose()).SubVector(0, 3).Normalize(2);
+                //if (temp[3] != 1 || temp1[3] != 1 || temp2[3] != 1)
+                //    Console.WriteLine("siema");
+                //t.NormalVectorA = TransformVector(triangle3D.NormalVectorA, modelMatrix.Inverse().Transpose()).Divide(temp[3])
+                //    .SubVector(0, 3).Normalize(2);
+                //t.NormalVectorB = TransformVector(triangle3D.NormalVectorB, modelMatrix.Inverse().Transpose()).Divide(temp1[3])
+                //    .SubVector(0, 3).Normalize(2);
+                //t.NormalVectorC = TransformVector(triangle3D.NormalVectorC, modelMatrix.Inverse().Transpose()).Divide(temp1[3])
+                //    .SubVector(0, 3).Normalize(2);
+                t.NormalVectorA = MNormal.Multiply(triangle3D.NormalVectorA).SubVector(0, 3).Normalize(2);
+                t.NormalVectorB = MNormal.Multiply(triangle3D.NormalVectorB).SubVector(0, 3).Normalize(2);
+                t.NormalVectorC = MNormal.Multiply(triangle3D.NormalVectorC).SubVector(0, 3).Normalize(2);
+
 
                 t.CameraVectorA = (camera.CameraPosition - t.WorldA.SubVector(0, 3)).Normalize(2);
                 t.CameraVectorB = (camera.CameraPosition - t.WorldB.SubVector(0, 3)).Normalize(2);
                 t.CameraVectorC = (camera.CameraPosition - t.WorldC.SubVector(0, 3)).Normalize(2);
 
-                if (t.CameraVectorA.DotProduct(t.NormalVectorA) < -0.5)
+                if (t.CameraVectorA.DotProduct(t.NormalVectorA) < -1)
                     continue;
 
                 t.LightVectorsA = new List<Vector<float>>();

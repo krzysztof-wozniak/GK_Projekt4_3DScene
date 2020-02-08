@@ -1,2 +1,14 @@
-﻿jak trzymac wektory normalne - 3 wspolrzedne czy 4 
-modele oswietlenia 
+﻿Stożek (?)
+Dodatkowe kamery
+Przelaczanie kamer
+Ruch klocka - klasa playera, bedzie trzymac wektor w ktorym jest zwrocony?
+Reflektor
+Naprawic wektory normalne?
+
+
+Opcjonalnie:
+Naprawic kule
+
+
+Camera - klasa bazowa, abstrakcyjna?
+FollowingCamera - overloads get
