@@ -49,8 +49,8 @@ namespace GK_Projekt4_3DScene
                 Matrix<float> transformationMatrix = camera.CreatePerspectiveFieldOfView().Multiply(camera.CreateLookAt()).Multiply(modelMatrix);
                 Model2D model2d = VertexShader.TransformModel(model, transformationMatrix, camera, lights);
                 model2d.ka = model.ka;
-                model2d.ks = model.ks;
                 model2d.kd = model.kd;
+                model2d.ks = model.ks;
                 model2d.m = model.m;
                 model2d.Color = model.Color;
                 MapModel(model2d, image.Width, image.Height);
