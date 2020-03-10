@@ -12,7 +12,7 @@ namespace GK_Projekt4_3DScene
     {
         private static Random r = new Random();
 
-        public static void FillPolygonNoLight(Triangle2D t, DirectBitmap image, Color c, ref float[,] zbuffer, List<LightSource> lights, int m, float kd, float ks, float ka)
+        public static void FillPolygonNoLight(Triangle2D t, DirectBitmap image, Color c, ref float[,] zbuffer, List<Light> lights, int m, float kd, float ks, float ka)
         {
             Color color = c;
             float zA = t.TransformedA[2];
@@ -77,7 +77,7 @@ namespace GK_Projekt4_3DScene
         }
 
 
-        public static void FillPolygon(Triangle2D t, DirectBitmap image, Color c, ref float[,] zbuffer, List<LightSource> lights, int m, float kd, float ks, float ka)
+        public static void FillPolygon(Triangle2D t, DirectBitmap image, Color c, ref float[,] zbuffer, List<Light> lights, int m, float kd, float ks, float ka)
         {
             Vector<float> cords = (t.WorldA + t.WorldB + t.WorldC).Divide(3);
             Vector<float> N = (t.NormalVectorA + t.NormalVectorB + t.NormalVectorC).Divide(3).Normalize(2);
@@ -145,7 +145,7 @@ namespace GK_Projekt4_3DScene
         }
 
 
-        public static void FillPolygonGouraud(Triangle2D t, DirectBitmap image, Color c, ref float[,] zbuffer, List<LightSource> lights, int m, float kd, float ks, float ka)
+        public static void FillPolygonGouraud(Triangle2D t, DirectBitmap image, Color c, ref float[,] zbuffer, List<Light> lights, int m, float kd, float ks, float ka)
         {
             //Vector<float> cords = (t.WorldA + t.WorldB + t.WorldC).Divide(3);
             //Vector<float> N = (t.NormalVectorA + t.NormalVectorB + t.NormalVectorC).Divide(3).Normalize(2);
@@ -239,7 +239,7 @@ namespace GK_Projekt4_3DScene
 
         }
 
-        public static void FillPolygonPhong(Triangle2D t, DirectBitmap image, Color c, ref float[,] zbuffer, List<LightSource> lights, int m, float kd, float ks, float ka, Camera camera)
+        public static void FillPolygonPhong(Triangle2D t, DirectBitmap image, Color c, ref float[,] zbuffer, List<Light> lights, int m, float kd, float ks, float ka, Camera camera)
         {
             
             //Color color = PixelShader.CalculateColor(c, cords, N, V, lights, m, ka, kd, ks);

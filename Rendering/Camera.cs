@@ -49,7 +49,7 @@ namespace GK_Projekt4_3DScene
         /// 
         /// </summary>
         /// <returns>Returns View Matrix</returns>
-        public Matrix<float> CreateLookAt()
+        public virtual Matrix<float> CreateLookAt()
         {
             Vector<float> zAxis = (CameraPosition - CameraTarget).Normalize(2);
 

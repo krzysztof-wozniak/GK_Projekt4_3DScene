@@ -30,7 +30,7 @@ namespace GK_Projekt4_3DScene
         //    }
         //}
 
-        public void DrawModels(List<Model3D> models, DirectBitmap image, Camera camera, List<LightSource> lights)
+        public void DrawModels(List<Model3D> models, DirectBitmap image, Camera camera, List<Light> lights)
         {
             zBuffer = new float[image.Width, image.Height];
             for(int i = 0; i < zBuffer.GetLength(0); i++)

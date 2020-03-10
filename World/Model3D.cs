@@ -85,7 +85,7 @@ namespace GK_Projekt4_3DScene
             //return translationMatrix.Multiply(rotationMatrixX).Multiply(rotationMatrixY)
             //    .Multiply(rotationMatrixZ).Multiply(scaleMatrix);
 
-            return scaleMatrix.Multiply(rotationMatrixX).Multiply(rotationMatrixY).Multiply(rotationMatrixZ).Multiply(translationMatrix);
+            return translationMatrix.Multiply(rotationMatrixX).Multiply(rotationMatrixY).Multiply(rotationMatrixZ).Multiply(scaleMatrix);
 
 
         }

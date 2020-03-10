@@ -28,7 +28,7 @@ namespace GK_Projekt4_3DScene
         //    return model2D;
         //}
 
-        public static Model2D TransformModel(Model3D model3D, Matrix<float> transformationMatrix, Camera camera, List<LightSource> lights)
+        public static Model2D TransformModel(Model3D model3D, Matrix<float> transformationMatrix, Camera camera, List<Light> lights)
         {
             Matrix<float> modelMatrix = model3D.GetModelMatrix();
             Model2D model2D = new Model2D();
@@ -78,9 +78,9 @@ namespace GK_Projekt4_3DScene
 
                 foreach (var light in lights)
                 {
-                    t.LightVectorsA.Add(light.LightPosition - t.WorldA.SubVector(0, 3));
-                    t.LightVectorsB.Add(light.LightPosition - t.WorldB.SubVector(0, 3));
-                    t.LightVectorsC.Add(light.LightPosition - t.WorldC.SubVector(0, 3));
+                    t.LightVectorsA.Add(light.Position - t.WorldA.SubVector(0, 3));
+                    t.LightVectorsB.Add(light.Position - t.WorldB.SubVector(0, 3));
+                    t.LightVectorsC.Add(light.Position - t.WorldC.SubVector(0, 3));
                 }
 
                 t.Color = triangle3D.Color;

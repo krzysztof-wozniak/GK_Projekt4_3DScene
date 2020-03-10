@@ -65,11 +65,13 @@
     </Compile>
     <Compile Include="Rendering\LightModel.cs" />
     <Compile Include="Rendering\Model2D.cs" />
+    <Compile Include="Rendering\PlayerCamera.cs" />
     <Compile Include="World\Model3D.cs" />
     <Compile Include="Rendering\PixelShader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\Triangle2D.cs" />
+    <Compile Include="World\Player.cs" />
     <Compile Include="World\Triangle3D.cs" />
     <Compile Include="Rendering\VertexShader.cs" />
     <EmbeddedResource Include="Form1.resx">

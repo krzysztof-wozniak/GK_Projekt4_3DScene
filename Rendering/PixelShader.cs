@@ -12,7 +12,7 @@ namespace GK_Projekt4_3DScene
     {
         //Dostaje na wejscie wektor normalny, wektor do swiatla, wektor do obserwatora
         public static Color CalculateColor(Color objectColor, Vector<float> worldPosition, Vector<float> N, Vector<float> V,
-                                           List<LightSource> lights, int m, float ka, float kd, float ks)
+                                           List<Light> lights, int m, float ka, float kd, float ks)
         {
             N = N.Normalize(2);
             V = V.Normalize(2);
@@ -21,13 +21,21 @@ namespace GK_Projekt4_3DScene
             float g = ka;
             foreach (var light in lights)
             {
-                Vector<float> L = (light.LightPosition - worldPosition).Normalize(2);
-                Vector<float> R = 2 * N * N.DotProduct(L) - L;
-                R = R.Normalize(2);
-
-                float lightR = (float)light.LightColor.R / 255f;
-                float lightG = (float)light.LightColor.G / 255f;
-                float lightB = (float)light.LightColor.B / 255f;
+                
+                Vector<float> L = (light.Position - worldPosition).Normalize(2);
+                Vector<float> R = (2 * N * N.DotProduct(L) - L).Normalize(2);
+                //R = R.Normalize(2);
+                PlayerFlashlight l = light as PlayerFlashlight;
+                if (l != null)
+                {
+                    
+                    float theta = l.GetDirection().DotProduct(-L);
+                    if (theta <= l.Angle)
+                        continue;
+                }
+                float lightR = (float)light.Color.R / 255f;
+                float lightG = (float)light.Color.G / 255f;
+                float lightB = (float)light.Color.B / 255f;
                 float NLproduct = N[0] * L[0] + N[1] * L[1] + N[2] * L[2];
                 if(N[2] > 0)
                 {
