@@ -19,7 +19,7 @@ namespace GK_Projekt4_3DScene
 
         private Engine Engine { get; set; }
 
-        private List<Model3D> Models { get; set; }
+        private List<Model3D> Models { get; set; } = new List<Model3D>();
 
         private float time = 0;
 
@@ -29,22 +29,20 @@ namespace GK_Projekt4_3DScene
 
         private int frames = 0;
 
-        public List<Light> Lights;
+        public List<Light> Lights = new List<Light>();
 
         private Model3D Player;
 
         public Form1()
         {
-
             InitializeComponent();
             this.Focus();
             this.KeyPreview = true;
             Engine = new Engine() { };
-            Models = new List<Model3D>();
             var builder = Vector<float>.Build;
 
             //Player
-            Player = InitPlayer();
+            InitPlayer();
             
 
             //Player flashlight
@@ -57,36 +55,30 @@ namespace GK_Projekt4_3DScene
             //Lights
             InitLights();
 
-
+            //Plane
             Model3D plane = Model3D.CreateCuboid(3, 3, 5f, 5f, 0.1f, Color.Gray);
             plane.Position[2] = -0.5f;
-            
-            
             Models.Add(plane);
-            Model3D lightModel = Model3D.CreateCuboid(1, 1, 0.05f, 0.05f, 0.05f, Color.Yellow);
-            Models.Add(lightModel);
-            lightModel.Position = Lights[0].Position;
+
+            //Big cuboid
             Models.Add(Model3D.CreateCuboid(7, 7, 7f, 7f, 7f, Color.White));
             Models.Last().Position[0] = 10f;
             Models.Last().Position[1] = 10f;
             
+            //Cone
             Models.Add(Model3D.CreateCone(20, 2, 1, Color.Teal));
-
-
-
-
+            
             fpsTimer.Start();
         }
 
-        private Model3D InitPlayer()
+        private void InitPlayer()
         {
-            Model3D player = Model3D.CreateSphere(25, 30, 1f, Color.IndianRed);
-            player.Position[0] = -3f;
-            player.Position[1] = -3f;
-            player.Position[2] = 0f;
-            Models.Add(player);
-
-            return player;
+            Player = Model3D.CreateSphere(25, 30, 1f, Color.IndianRed);
+            Player.Position[0] = -3f;
+            Player.Position[1] = -3f;
+            Player.Position[2] = 0f;
+            Models.Add(Player);
+            
         }
 
         private void InitCameras(VectorBuilder<float> builder, Model3D player)
@@ -109,9 +101,20 @@ namespace GK_Projekt4_3DScene
 
         private void InitLights()
         {
-            Lights = new List<Light>();
-            Lights.Add(new Light(0f, 2f, 0f, Color.FromArgb(255, 255, 255)));
-            Lights.Add(new Light(0f, 2f, 20f, Color.FromArgb(255, 255, 255)));
+            Light light;
+            Model3D lightModel;
+            light = new Light(0f, 2f, 0f, Color.FromArgb(255, 255, 255));
+            Lights.Add(light);
+            lightModel = Model3D.CreateCuboid(1, 1, 0.15f, 0.15f, 0.15f, Color.Yellow);
+            Models.Add(lightModel);
+            lightModel.Position = light.Position;
+
+            light = new Light(0f, 2f, 20f, Color.FromArgb(255, 255, 255));
+            Lights.Add(light);
+            lightModel = Model3D.CreateCuboid(1, 1, 0.15f, 0.15f, 0.15f, Color.Yellow);
+            Models.Add(lightModel);
+            lightModel.Position = light.Position;
+
         }
 
 
@@ -137,10 +140,8 @@ namespace GK_Projekt4_3DScene
         private Random r = new Random();
         private void timer_Tick(object sender, EventArgs e)
         {
-            Models.Last().Position[2] =  1.5f + (float)(2 * Math.Sin(time * 0.02));
+            Models.Last().Position[2] =  1.1f + (float)(1.3 * Math.Sin(time * 0.1));
             Models.Last().Rotation[2] += 2f;
-            label1.Text = "Camera position: \n" + Cameras[0].CameraPosition.ToVectorString() + 
-                "\n f: " + Cameras[0].FarPlaneDistance + "\n n: " + Cameras[0].NearPlaneDistance;
             
             UpdatePicture();
             time += 1;
@@ -183,24 +184,24 @@ namespace GK_Projekt4_3DScene
                     chosenCameraIndex = 2;
                     break;
                 case Keys.W:
-                    Models[0].Position[0] += 0.5f * (float)Math.Cos(MathExtentions.DegreeToRadian(Models[0].Rotation[2]));
-                    Models[0].Position[1] += 0.5f * (float)Math.Sin(MathExtentions.DegreeToRadian(Models[0].Rotation[2]));
+                    Player.Position[0] += 0.5f * (float)Math.Cos(MathExtentions.DegreeToRadian(Models[0].Rotation[2]));
+                    Player.Position[1] += 0.5f * (float)Math.Sin(MathExtentions.DegreeToRadian(Models[0].Rotation[2]));
                     break;
                 case Keys.S:
-                    Models[0].Position[0] -= 0.5f * (float)Math.Cos(MathExtentions.DegreeToRadian(Models[0].Rotation[2]));
-                    Models[0].Position[1] -= 0.5f * (float)Math.Sin(MathExtentions.DegreeToRadian(Models[0].Rotation[2]));
+                    Player.Position[0] -= 0.5f * (float)Math.Cos(MathExtentions.DegreeToRadian(Models[0].Rotation[2]));
+                    Player.Position[1] -= 0.5f * (float)Math.Sin(MathExtentions.DegreeToRadian(Models[0].Rotation[2]));
                     break;
                 case Keys.A:
-                    Models[0].Rotation[2] -= 3f;
+                    Player.Rotation[2] -= 3f;
                     break;
                 case Keys.D:
-                    Models[0].Rotation[2] += 3f;
+                    Player.Rotation[2] += 3f;
                     break;
                 case Keys.E:
-                    Models[0].Position[2] += 0.5f;
+                    Player.Position[2] += 0.5f;
                     break;
                 case Keys.Q:
-                    Models[0].Position[2] -= 0.5f;
+                    Player.Position[2] -= 0.5f;
                     break;
             }
         }
