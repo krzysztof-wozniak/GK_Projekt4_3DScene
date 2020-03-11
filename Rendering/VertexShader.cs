@@ -10,6 +10,7 @@ namespace GK_Projekt4_3DScene
 {
     public static class VertexShader
     {
+        ////Better to mult the matrices once before transforming everything
         //public static Model2D TransformModel(Model3D model3D, Matrix<float> modelMatrix, Matrix<float> viewMatrix, Matrix<float> projectionMatrix)
         //{
         //    Model2D model2D = new Model2D();
@@ -36,6 +37,7 @@ namespace GK_Projekt4_3DScene
             Vector<float> a, b, c;
             foreach (Triangle3D triangle3D in model3D.Triangles)
             {
+                //Points on the screen
                 a = TransformVector(triangle3D.A, transformationMatrix);
                 b = TransformVector(triangle3D.B, transformationMatrix);
                 c = TransformVector(triangle3D.C, transformationMatrix);
@@ -43,28 +45,18 @@ namespace GK_Projekt4_3DScene
                     continue;
                 Triangle2D t = new Triangle2D(a, b, c);
 
+                //Real world cords
                 t.WorldA = TransformVector(triangle3D.A, modelMatrix).SubVector(0, 3);
                 t.WorldB = TransformVector(triangle3D.B, modelMatrix).SubVector(0, 3);
                 t.WorldC = TransformVector(triangle3D.C, modelMatrix).SubVector(0, 3);
                 var MNormal = modelMatrix.Inverse().Transpose();
-                //var temp = TransformVector(triangle3D.NormalVectorA, MNormal);
-                //temp = MNormal.Multiply(triangle3D.NormalVectorA);
-                //var temp1 = TransformVector(triangle3D.NormalVectorB, modelMatrix.Inverse().Transpose());
-                //var temp2 = TransformVector(triangle3D.NormalVectorC, modelMatrix.Inverse().Transpose());
 
-                //if (temp[3] != 1 || temp1[3] != 1 || temp2[3] != 1)
-                //    Console.WriteLine("siema");
-                //t.NormalVectorA = TransformVector(triangle3D.NormalVectorA, modelMatrix.Inverse().Transpose()).Divide(temp[3])
-                //    .SubVector(0, 3).Normalize(2);
-                //t.NormalVectorB = TransformVector(triangle3D.NormalVectorB, modelMatrix.Inverse().Transpose()).Divide(temp1[3])
-                //    .SubVector(0, 3).Normalize(2);
-                //t.NormalVectorC = TransformVector(triangle3D.NormalVectorC, modelMatrix.Inverse().Transpose()).Divide(temp1[3])
-                //    .SubVector(0, 3).Normalize(2);
+                //Real world normal vectors
                 t.NormalVectorA = MNormal.Multiply(triangle3D.NormalVectorA).SubVector(0, 3).Normalize(2);
                 t.NormalVectorB = MNormal.Multiply(triangle3D.NormalVectorB).SubVector(0, 3).Normalize(2);
                 t.NormalVectorC = MNormal.Multiply(triangle3D.NormalVectorC).SubVector(0, 3).Normalize(2);
 
-
+                //Real world vector to the camera
                 t.CameraVectorA = (camera.CameraPosition - t.WorldA.SubVector(0, 3)).Normalize(2);
                 t.CameraVectorB = (camera.CameraPosition - t.WorldB.SubVector(0, 3)).Normalize(2);
                 t.CameraVectorC = (camera.CameraPosition - t.WorldC.SubVector(0, 3)).Normalize(2);

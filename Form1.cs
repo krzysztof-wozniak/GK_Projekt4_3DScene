@@ -30,8 +30,8 @@ namespace GK_Projekt4_3DScene
         private int frames = 0;
 
         public List<Light> Lights;
-        
 
+        private Model3D Player;
 
         public Form1()
         {
@@ -42,32 +42,26 @@ namespace GK_Projekt4_3DScene
             Engine = new Engine() { };
             Models = new List<Model3D>();
             var builder = Vector<float>.Build;
-            Vector<float> cameraPosition = builder.DenseOfArray(new float[] { 4f, 6f, 5f });
-            Vector<float> cameraTarget = builder.DenseOfArray(new float[] { 0f, 0f, 0f });
-            Vector<float> cameraUpVector = builder.DenseOfArray(new float[] { 0f, 0f, -1f });
-            Camera cam = new Camera(cameraPosition, cameraTarget, cameraUpVector);
-            Camera staticCamera = new Camera(cameraPosition.Clone(), cameraTarget.Clone(), cameraUpVector.Clone());
-            Cameras.Add(staticCamera);
-            Cameras.Add(cam);
-            //for(int i = 0; i < 1; i++)
-            //Models.Add(Model3D.CreateCone(10, 0.7f, 0.2f, Color.Green));
-            Lights = new List<Light>();
-            Lights.Add(new Light(0f, 2f, 0f, Color.FromArgb(255, 255, 255)));
-            Lights.Add(new Light(0f, 2f, 20f, Color.FromArgb(255, 255, 255)));
-            //Lights.Add(new LightSource(-0.5f, -0.6f, 0.2f, Color.Red));
-            //Models.Add(Model3D.CreateCuboid(4, 4, 0.5f, 0.5f, 0.5f, Color.FromArgb(50, 100, 150)));
+
+            //Player
+            Player = InitPlayer();
+            
+
+            //Player flashlight
+            Flashlight l = new PlayerFlashlight(0f, 0f, 0f, Color.BlueViolet, 10f, builder.DenseOfArray(new float[] { 1f, 0f, 0f }), Player);
+            Lights.Add(l);
+
+            //Cameras
+            InitCameras(builder, Player);
+
+            //Lights
+            InitLights();
+
+
             Model3D plane = Model3D.CreateCuboid(3, 3, 5f, 5f, 0.1f, Color.Gray);
             plane.Position[2] = -0.5f;
-            //Model3D player = Model3D.CreateCuboid(1, 1, 1f, 1f, 1f, Color.IndianRed);
-            Model3D player = Model3D.CreateSphere(25, 30, 1f, Color.IndianRed);
-            PlayerCamera playerCamera = new PlayerCamera(cameraPosition.Clone(), cameraTarget.Clone(), cameraUpVector.Clone());
-            playerCamera.PlayerToFollow = player;
-            Cameras.Add(playerCamera);
-            player.Position[0] = -3f;
-            player.Position[1] = -3f;
-            player.Position[2] = 0f;
-            cam.CameraTarget = player.Position;
-            Models.Add(player);
+            
+            
             Models.Add(plane);
             Model3D lightModel = Model3D.CreateCuboid(1, 1, 0.05f, 0.05f, 0.05f, Color.Yellow);
             Models.Add(lightModel);
@@ -75,23 +69,51 @@ namespace GK_Projekt4_3DScene
             Models.Add(Model3D.CreateCuboid(7, 7, 7f, 7f, 7f, Color.White));
             Models.Last().Position[0] = 10f;
             Models.Last().Position[1] = 10f;
-            Flashlight l = new PlayerFlashlight(0f, 0f, 0f, Color.BlueViolet, 10f, builder.DenseOfArray(new float[] { 1f, 0f, 0f }), player);
-            Lights.Add(l);
+            
+            Models.Add(Model3D.CreateCone(20, 2, 1, Color.Teal));
 
-            //Models.Add(Model3D.CreateSphere(15, 15, 0.5f, Color.FromArgb(255, 255, 255)));
 
-            //Models.Add(Model3D.CreateCuboid(3, 3, 0.6f, 0.6f, 0.5f, Color.Beige));
-            //Models[1].Position[2] = 0.5f;
-            //Models[2].Position[0] = 0;
-            //Models[2].Position[1] = 0;
-            //Models[2].Position[2] = 0;
+
+
             fpsTimer.Start();
-            //Models[1].Rotation[1] = 90f;
-            //Models[1].Scale[0] = 1.1f;
-            //Models[1].Scale[1] = 1.1f;
-            //Models[1].Scale[2] = 1.1f;
-            //Models.Add(Model3D.CreatePyramid(20, -0.5f, 0.5f));
         }
+
+        private Model3D InitPlayer()
+        {
+            Model3D player = Model3D.CreateSphere(25, 30, 1f, Color.IndianRed);
+            player.Position[0] = -3f;
+            player.Position[1] = -3f;
+            player.Position[2] = 0f;
+            Models.Add(player);
+
+            return player;
+        }
+
+        private void InitCameras(VectorBuilder<float> builder, Model3D player)
+        {
+            //Cameras
+            //Static Camera
+            Vector<float> cameraPosition = builder.DenseOfArray(new float[] { 4f, 6f, 5f });
+            Vector<float> cameraTarget = builder.DenseOfArray(new float[] { 0f, 0f, 0f });
+            Vector<float> cameraUpVector = builder.DenseOfArray(new float[] { 0f, 0f, -1f });
+            Camera cam = new Camera(cameraPosition, player.Position, cameraUpVector);
+            Camera staticCamera = new Camera(cameraPosition.Clone(), cameraTarget.Clone(), cameraUpVector.Clone());
+            Cameras.Add(staticCamera);
+            Cameras.Add(cam);
+
+            //Camera behind player
+            PlayerCamera playerCamera = new PlayerCamera(cameraPosition.Clone(), cameraTarget.Clone(), cameraUpVector.Clone());
+            playerCamera.PlayerToFollow = player;
+            Cameras.Add(playerCamera);
+        }
+
+        private void InitLights()
+        {
+            Lights = new List<Light>();
+            Lights.Add(new Light(0f, 2f, 0f, Color.FromArgb(255, 255, 255)));
+            Lights.Add(new Light(0f, 2f, 20f, Color.FromArgb(255, 255, 255)));
+        }
+
 
         private void pictureBox_Click(object sender, EventArgs e)
         {
@@ -115,6 +137,8 @@ namespace GK_Projekt4_3DScene
         private Random r = new Random();
         private void timer_Tick(object sender, EventArgs e)
         {
+            Models.Last().Position[2] =  1.5f + (float)(2 * Math.Sin(time * 0.02));
+            Models.Last().Rotation[2] += 2f;
             label1.Text = "Camera position: \n" + Cameras[0].CameraPosition.ToVectorString() + 
                 "\n f: " + Cameras[0].FarPlaneDistance + "\n n: " + Cameras[0].NearPlaneDistance;
             

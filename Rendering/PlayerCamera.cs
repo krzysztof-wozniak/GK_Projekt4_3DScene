@@ -11,13 +11,10 @@ namespace GK_Projekt4_3DScene
     {
         public Model3D PlayerToFollow { get; set; }
 
-        public PlayerCamera(Vector<float> cameraPosition, Vector<float> cameraTarget, Vector<float> cameraUpVector, 
-                            float fieldOfView = 45f, float nearPlaneDistance = 1f, float farPlaneDistance = 30f, float aspectRatio = 1f) 
+        public PlayerCamera(Vector<float> cameraPosition, Vector<float> cameraTarget, Vector<float> cameraUpVector,
+                            float fieldOfView = 45f, float nearPlaneDistance = 1f, float farPlaneDistance = 30f, float aspectRatio = 1f)
                             : base(cameraPosition, cameraTarget, cameraUpVector, fieldOfView,
-                                   nearPlaneDistance, farPlaneDistance, aspectRatio)
-        {
-
-        }
+                                   nearPlaneDistance, farPlaneDistance, aspectRatio) { }
 
         public override Matrix<float> CreateLookAt()
         {

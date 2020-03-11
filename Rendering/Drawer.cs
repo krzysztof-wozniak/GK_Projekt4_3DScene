@@ -147,10 +147,6 @@ namespace GK_Projekt4_3DScene
 
         public static void FillPolygonGouraud(Triangle2D t, DirectBitmap image, Color c, ref float[,] zbuffer, List<Light> lights, int m, float kd, float ks, float ka)
         {
-            //Vector<float> cords = (t.WorldA + t.WorldB + t.WorldC).Divide(3);
-            //Vector<float> N = (t.NormalVectorA + t.NormalVectorB + t.NormalVectorC).Divide(3).Normalize(2);
-            //Vector<float> V = (t.CameraVectorA + t.CameraVectorB + t.CameraVectorC).Divide(3).Normalize(2);
-            //Color color = PixelShader.CalculateColor(c, cords, N, V, lights, m, ka, kd, ks);
             Color colorA = PixelShader.CalculateColor(c, t.WorldA, t.NormalVectorA, t.CameraVectorA, lights, m, ka, kd, ks);
             Color colorB = PixelShader.CalculateColor(c, t.WorldB, t.NormalVectorB, t.CameraVectorB, lights, m, ka, kd, ks);
             Color colorC = PixelShader.CalculateColor(c, t.WorldC, t.NormalVectorC, t.CameraVectorC, lights, m, ka, kd, ks);
@@ -205,9 +201,6 @@ namespace GK_Projekt4_3DScene
                                 int r = (int)(255 * Interpolate(A, B, C, p, (float)colorA.R / 255f, (float)colorB.R / 255f, (float)colorC.R /255f));
                                 int g = (int)(255 * Interpolate(A, B, C, p, (float)colorA.G / 255f, (float)colorB.G / 255f, (float)colorC.G / 255f));
                                 int b = (int)(255 * Interpolate(A, B, C, p, (float)colorA.B / 255f, (float)colorB.B / 255f, (float)colorC.B / 255f));
-                                //int r = (int)Interpolate(A, B, C, p, colorA.R, colorB.R, colorC.R);
-                                //int g = (int)Interpolate(A, B, C, p, colorA.G, colorB.G, colorC.G);
-                                //int b = (int)Interpolate(A, B, C, p, colorA.B, colorB.B, colorC.B);
                                 if (r > 255)
                                     r = 255;
                                 if (r < 0)
@@ -241,12 +234,6 @@ namespace GK_Projekt4_3DScene
 
         public static void FillPolygonPhong(Triangle2D t, DirectBitmap image, Color c, ref float[,] zbuffer, List<Light> lights, int m, float kd, float ks, float ka, Camera camera)
         {
-            
-            //Color color = PixelShader.CalculateColor(c, cords, N, V, lights, m, ka, kd, ks);
-            //Color colorA = PixelShader.CalculateColor(c, t.WorldA, t.NormalVectorA, t.CameraVectorA, lights, m, ka, kd, ks);
-            //Color colorB = PixelShader.CalculateColor(c, t.WorldB, t.NormalVectorB, t.CameraVectorB, lights, m, ka, kd, ks);
-            //Color colorC = PixelShader.CalculateColor(c, t.WorldC, t.NormalVectorC, t.CameraVectorC, lights, m, ka, kd, ks);
-
             float zA = t.TransformedA[2];
             float zB = t.TransformedB[2];
             float zC = t.TransformedC[2];

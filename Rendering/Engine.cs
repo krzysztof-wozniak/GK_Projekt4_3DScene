@@ -15,7 +15,7 @@ namespace GK_Projekt4_3DScene
         public LightModel LightModel { get; set; } = LightModel.Constant;
 
         
-        
+        ////Is drawing one model useful?
         //public void DrawModel(Model3D model3d, DirectBitmap image, Camera camera)
         //{
         //    if (!model3d.Visible)
@@ -43,16 +43,19 @@ namespace GK_Projekt4_3DScene
 
             List<Model2D> models2d = new List<Model2D>();
 
+            Matrix<float> multMatrix = camera.CreatePerspectiveFieldOfView().Multiply(camera.CreateLookAt());
             foreach (var model in models.Where(m => m.Visible))
             {
                 Matrix<float> modelMatrix = model.GetModelMatrix();
-                Matrix<float> transformationMatrix = camera.CreatePerspectiveFieldOfView().Multiply(camera.CreateLookAt()).Multiply(modelMatrix);
+                Matrix<float> transformationMatrix = multMatrix.Multiply(modelMatrix);
                 Model2D model2d = VertexShader.TransformModel(model, transformationMatrix, camera, lights);
                 model2d.ka = model.ka;
                 model2d.kd = model.kd;
                 model2d.ks = model.ks;
                 model2d.m = model.m;
                 model2d.Color = model.Color;
+
+                //Maps to the screen cords
                 MapModel(model2d, image.Width, image.Height);
                 if (model2d != null)
                     models2d.Add(model2d);
@@ -90,14 +93,7 @@ namespace GK_Projekt4_3DScene
                     }
                     break;
             }
-            //foreach (var model2d in models2d)
-            //{
-            //    for (int i = 0; i < model2d.Triangles.Count; i++)
-            //    {
-            //        Drawer.FillPolygon(model2d.Triangles[i], image, model2d.Color, ref zBuffer);
-            //    }
-            //}
-
+            ////Uncomment to draw contours
             //foreach (var model2d in models2d)
             //{
             //    for (int i = 0; i < model2d.Triangles.Count; i++)
